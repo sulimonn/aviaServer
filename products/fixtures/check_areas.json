@@ -1,0 +1,730 @@
+[
+    {
+        "model": "supervision.checkarea",
+        "pk": 1,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 2,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 3,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 4,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 5,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 6,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 7,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 8,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 9,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 10,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 11,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 12,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 13,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 1
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 14,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 15,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 16,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 17,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 18,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 19,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 20,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 21,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 22,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 23,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 24,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 25,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 26,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 2
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 27,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 28,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 29,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 30,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 31,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 32,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 33,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 34,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 35,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 36,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 37,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 38,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 39,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 3
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 40,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 41,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 42,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 43,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 44,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 45,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 46,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 47,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 48,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 49,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 50,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 51,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 52,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 4
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 53,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 54,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 55,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 56,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 57,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 58,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 59,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 60,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 61,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 62,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 63,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 64,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 65,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 5
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 66,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 67,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 68,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 69,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 70,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 71,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 72,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 73,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 74,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 75,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 76,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 77,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 78,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 6
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 79,
+        "fields": {
+            "title": "Летная эксплуатация(OPS)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 80,
+        "fields": {
+            "title": "Система управления безопасностью полетов(SMS)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 81,
+        "fields": {
+            "title": "Система качества(QMS)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 82,
+        "fields": {
+            "title": "Опасные грузы(DG)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 83,
+        "fields": {
+            "title": "Эксплуатационный контроль(FD)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 84,
+        "fields": {
+            "title": "Кабинный экипаж(CAB)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 85,
+        "fields": {
+            "title": "Авиационная безопасность(SEC)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 86,
+        "fields": {
+            "title": "Летная годность(AIR)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 87,
+        "fields": {
+            "title": "Подготовка персонала(PEL)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 88,
+        "fields": {
+            "title": "Аэронавигационное обеспечение полетов(ANS)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 89,
+        "fields": {
+            "title": "Наземное обслуживание(GH)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 90,
+        "fields": {
+            "title": "Правовой статус(LEG)",
+            "company": 7
+        }
+    },
+    {
+        "model": "supervision.checkarea",
+        "pk": 91,
+        "fields": {
+            "title": "Финансово-экономическое состояние(FIN)",
+            "company": 7
+        }
+    }
+]

@@ -1,0 +1,18 @@
+body {
+    padding-top: 56px;
+}
+
+@media (max-width: 575.98px) {
+    .main-pic img{
+        width: 300px;
+    }
+    .main-label h1{
+        font-size: 22px;
+    }
+    .table-responsive{
+        display: block !important;
+        overflow-x: auto !important;
+        width: 100vw !important;
+      }
+}
+

@@ -1,0 +1,104 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block css %}
+<style>
+    .back-button {
+        margin-top: 20px;
+    }
+
+    .table-container {
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #f5f5f5;
+    }
+
+    .table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .table th, .table td {
+        white-space: nowrap; /* Запрещаем перенос текста */
+        overflow: hidden; /* Обрезаем текст, если не помещается */
+        text-overflow: ellipsis; /* Добавляем многоточие, если текст обрезается */
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <br>
+    <a href="{% url 'products:index' %}" class="btn btn-primary back-button"><i class="fas fa-arrow-left"></i>Назад</a>
+    <div class="table-container">
+        <table class="table">
+            <tbody>
+
+                <tr>
+                    <th>Название авиакомпании/Управленческий персонал</th>
+                    <td>{{ company.name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Номер СЭ</th>
+                    <td>{{ company.number }}</td>
+                </tr>
+
+                <tr>
+                    <th>КОД ИКАО</th>
+                    <td>{{ company.code }}</td>
+                </tr>
+
+                <tr>
+                    <th>Телефон</th>
+                    <td>{{ company.first_phone }} {{ company.second_phone }}</td>
+                </tr>
+
+                <tr>
+                    <th>Статус СЭ</th>
+                    <td>
+                        {% if company.status %}
+                            Действующий
+                        {% else %}
+                            Приостановлен
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Адрес</th>
+                    <td>{{ company.address }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ company.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Вид деятельности</th>
+                    <td>{{ company.kind_of_activity }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

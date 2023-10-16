@@ -1,0 +1,370 @@
+<!--check_area_table.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Надзор</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+        .area-title{
+        }
+        button, input{
+            outline: none;
+        }
+        .ops_td{
+            writing-mode: vertical-rl;
+            -webkit-writing-mode: vertical-rl;
+            text-orientation: mixed;
+            margin: 5px;
+        }
+        .ops_td::first-letter {
+            text-transform: capitalize;
+        }
+        table {
+          width: 50px;
+        }
+        .checkoff{
+            background-color: rgba(124,124,124,0.1);
+            border: none;
+        }
+        .checked{
+           background-color: rgba(8, 252, 20, 0.5);
+            border: none;
+            transition: .2s linear;
+        }
+        .checked:hover{
+           background-color: rgba(8, 252, 20, 1);
+        }
+        .notchecked{
+            background-color: rgba(252, 8, 16, 0.5);
+            border: none;
+            transition: .2s ;
+        }
+        .notchecked:hover{
+            background-color: rgba(252, 8, 16, 1);
+
+        }
+        .checking{
+            background-color: rgba(248, 215, 2, 0.5);
+            border: none;
+            transition: .2s linear;
+        }
+        .checking:hover{
+           background-color: rgba(248, 215, 2, 1);
+        }
+        .absol{
+            width: 100%;
+            height: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+        .updating{
+            border: none;
+            cursor: pointer;
+        }
+        .updating:hover{
+            background-color: rgb(33, 158, 186)
+        }
+        .moved{
+            background-color: rgba(8, 65, 252, 0.5);
+            border: none;
+            transition: .2s linear;
+
+        }
+        .moved:hover{
+            background-color: rgba(8, 65, 252, 1);
+        }
+        th{
+            border-width: 1px;
+        }
+
+        .info{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            width: 50%;
+            align-items: center;
+            border-radius: 5px 5px 0 0;
+            background-color: white;
+            border-top: 1px solid #0a4275;
+            border-right: 1px solid #0a4275;
+            border-left: 1px solid #0a4275;
+            margin: 0 25px 0 auto;
+        }
+        .info-item{
+            color: rgba(0, 0, 0, 0.88);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+            justify-content: center;
+        }
+        .info-check{
+            width: 45px;
+            height: 20px;
+        }
+        .info-label{
+            line-height: 12px;
+            display: inline-flex;
+            margin: 0;
+            padding: 0;
+        }
+        .info-checked{
+            background-color: rgba(8, 252, 20, 0.5);
+            border: 1px solid rgba(8, 252, 20, 1);
+        }
+        .info-checking{
+            background-color: rgba(248, 215, 2, 0.5);
+            border: 1px solid rgba(248, 215, 2, 1);
+        }
+        .info-notchecked{
+            background-color: rgba(252, 8, 16, 0.5);
+            border: 1px solid rgba(252, 8, 16, 1);
+
+        }
+        .info-moved{
+            background-color: rgba(8, 65, 252, 0.5);
+            border: 1px solid rgba(8, 65, 252, 1);
+
+        }
+        .nav-tabs .nav-link:hover{
+            border: 1px solid #0a4275;
+        }
+        .nav-tabs .active:hover{
+            border-bottom: 1px solid transparent;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs pt-3" style="border-bottom: 1px solid #0a4275">
+  <li class="nav-item">
+    <a style="color: #0a4275;" class="nav-link" href="{% url 'index' %}">Главная</a>
+  </li>
+  <li class="nav-item">
+    <a style="
+            background-color: white;
+            color: #0a4275;
+            border-top: 1px solid #0a4275;
+            border-right: 1px solid #0a4275;
+            border-left: 1px solid #0a4275;
+" class="nav-link active" aria-current="page" href="#">Надзор</a>
+  </li>
+    {% if request.user.is_superuser %}
+  <li class="nav-item">
+    <a style="color: #0a4275;" class="nav-link" href="{% url 'supervision:dashboard' company_slug=company_slug %}">Статистика</a>
+  </li>
+  <li class="nav-item">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Период
+      </button>
+      <ul class="dropdown-menu">
+          {% for period in periods %}
+        <li><a class="dropdown-item" href="?period={{ period.period }}">{{ period.period }}</a></li>
+          {% endfor %}
+      </ul>
+    </div>
+  </li>
+    {% endif %}
+
+<div class="info">
+    <div class="info-item">
+        <span class="info-check info-checked"></span>
+        <span class="info-label">Проверено</span>
+    </div>
+    <div class="info-item">
+        <span class="info-check info-checking"></span>
+        <span class="info-label">В процессе<br> устранения замечаний</span>
+    </div>
+    <div class="info-item">
+        <span class="info-check info-notchecked"></span>
+        <span class="info-label">Плановая проверка</span>
+    </div>
+    <div class="info-item">
+        <span class="info-check info-moved"></span>
+        <span class="info-label">Перенесено</span>
+    </div>
+</div>
+</ul>
+<table class="table table-bordered text-center">
+    <thead>
+     <tr>
+            <th rowspan="4" class="align-middle"  style="border-top-color: transparent;">№</th>
+            <th rowspan="4" class="align-middle" style="border-top-color: transparent">Область проверки</th>
+            <th colspan="20" style="border-top-color: transparent">Двадцать месяцев после даты получения СЭ и два месяца до продления СЭ</th>
+        </tr>
+            {{ table_html|safe }}
+        <tr>
+
+            {% for i in range %}
+              <td id="m{{i}}">{{ i }}</td>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+
+     {% for check_area, months in check_areas %}
+      <tr class="">
+        <th scope="row" class="area-title">{{ forloop.counter }}</th>
+        <td class="text-left area-title" id="t{{check_area.id}}">{{ check_area.title }}</td>
+            {% for key, month in months.items %}
+                <td class="empty-cell p-0 position-relative stable">
+                    <a {% if month.status == 'Moved' %}
+                        href="{% url 'supervision:moved' company_slug=company_slug%}?area={{check_area.pk}}&month={{month.month}}">
+                        {% else %}
+                        href="{% url 'supervision:check_area_table' company_slug=company_slug%}?area={{check_area.pk}}&month={{month.month}}">
+                        {% endif %}
+                        {%if month.checking %}
+                        <button class="position-absolute
+                           {% if month.status == 'NotChecked' %}
+                        notchecked
+                        {% elif month.status == 'Checked' %}
+                        checked
+                        {% elif month.status == 'Checking' %}
+                        checking
+                        {% elif month.status == 'Moved' %}
+                        moved
+                        {% endif %}
+                        absol btn-hover"
+                                data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
+                                type="submit" id="{{forloop.counter}}{{check_area.pk}}">
+                        </button>
+                        {% else %}
+                        <button class="position-absolute checkoff absol btn-hover"
+                                disabled
+                                data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
+                                type="submit"  id="{{forloop.counter}}{{check_area.pk}}">
+                        </button>
+                        {%endif%}
+                    </a>
+                </td>
+                {% if request.user.is_superuser %}
+                <td class="empty-cell p-0 position-relative update" hidden="hidden">
+                    <form  id="updateForm" class="position-absolute update-form absol" method="post"
+                          action="{% url 'supervision:update_check_month' check_month_id=month.id %}">
+                      {% csrf_token %}
+                        <input type="checkbox" name="checking" id="id_checking" checked hidden>
+                        {% if month.checking %}
+                            <button style="background-color: rgba(183, 33, 33)" class="position-absolute updating absol btn-hover"
+                                    type="button" data-id="{{forloop.counter}}{{check_area.pk}}"
+                                    data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}">
+                            </button>
+                        {% else %}
+                            <button style="background-color: rgba(28,137,161,0.63)" class="position-absolute updating absol btn-hover"
+                                    type="button" data-id="{{forloop.counter}}{{check_area.pk}}"
+                                    data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
+                                    >
+                            </button>
+                        {% endif %}
+                    </form>
+                  </td>
+                {% endif %}
+            {% endfor %}
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% if request.user.is_superuser %}
+     <button type="button" id="update" class="btn btn-secondary">Изменить</button>
+     <button type="submit" id="submit-all" hidden="hidden" class="btn btn-success">Готово</button>
+
+<script>
+    const update = document.getElementById('update')
+    const stable = document.getElementById('submit-all')
+    update.addEventListener('click', () => {
+        let stable = document.getElementsByClassName('stable')
+        for (let i = 0; i < stable.length; i++) {
+            stable[i].hidden = true
+        }
+        let update = document.getElementsByClassName('update')
+        for (let i = 0; i < update.length; i++) {
+            update[i].hidden = false
+        }
+        const submit = document.getElementById('submit-all')
+        const updbtn = document.getElementById('update')
+        submit.hidden = false
+        updbtn.hidden = true
+    })
+    stable.addEventListener('click', function() {
+        let stable = document.getElementsByClassName('stable')
+        for (let i = 0; i < stable.length; i++) {
+            stable[i].hidden = false
+        }
+        let update = document.getElementsByClassName('update')
+        for (let i = 0; i < update.length; i++) {
+            update[i].hidden = true
+        }
+        const submit = document.getElementById('submit-all')
+        const updbtn = document.getElementById('update')
+        submit.hidden = true
+        updbtn.hidden = false
+    });
+    const btnHover = document.getElementsByClassName('btn-hover')
+
+    for (let i = 0; i < btnHover.length; i++) {
+        const btn = btnHover[i]
+        btn.addEventListener('mouseenter', (e) => {
+            document.getElementById(e.target.dataset.title).style.backgroundColor = 'rgba(252, 8, 16, 0.5)';
+            document.getElementById(e.target.dataset.int).style.backgroundColor = 'rgba(252, 8, 16, 0.5)';
+        })
+        btn.addEventListener('mouseleave', (e) => {
+            document.getElementById(e.target.dataset.title).style.backgroundColor = 'transparent';
+            document.getElementById(e.target.dataset.int).style.backgroundColor = 'transparent';
+        });
+    }
+
+    const buttons = document.getElementsByClassName('updating')
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', (e) => {
+            let form = e.target.parentNode;
+            let formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const btn = document.getElementById(form.lastElementChild.dataset.id)
+                console.log('Form submitted successfully:', data.check_month)
+                if (data.check_month === true){
+                    form.lastElementChild.style = "background-color: #ba212170"
+                    console.log(btn)
+                    btn.disabled = false
+                    btn.classList.remove('checkoff')
+                    btn.classList.add('checkon')
+                }
+                if (data.check_month === false){
+                    form.lastElementChild.style = "background-color: #1e7e3444"
+                    btn.disabled = true
+                    console.log(btn)
+                    btn.classList.remove('checkon')
+                    btn.classList.add('checkoff')
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
+        })
+    }
+
+
+</script>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+</body>
+</html>
+

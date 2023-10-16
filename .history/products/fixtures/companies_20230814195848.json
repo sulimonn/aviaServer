@@ -1,0 +1,115 @@
+[
+    {
+      "model": "products.companies",
+      "pk": 1,
+      "fields": {
+        "name": "AVIA TRAFFIC COMPANY",
+        "number": 23,
+        "code": "AVJ",
+        "validity": "2024-12-11",
+        "status": true,
+        "address": "Some Address 26",
+        "first_phone": "+996312544762",
+        "second_phone": "+996312544764",
+        "email": "atc@aero.kg",
+        "kind_of_activity": 1
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 2,
+      "fields": {
+        "name": "TEZ JET",
+        "number": 46,
+        "code": "TEZ",
+        "validity": "2024-11-30",
+        "status": true,
+        "address": "Some Address 96",
+        "first_phone": "+996312910889",
+        "second_phone": "+996312910880",
+        "email": "info@tezjet.kg",
+        "kind_of_activity": 1
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 3,
+      "fields": {
+        "name": "AIR KG AIRLINE",
+        "number": 50,
+        "code": "KGC",
+        "validity": "2024-05-14",
+        "status": true,
+        "address": "Some Address",
+        "first_phone": "+996312693272",
+        "second_phone": "+996312693580",
+        "email": "agmin@airkg.kg",
+        "kind_of_activity": 1
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 4,
+      "fields": {
+        "name": "SKY KG AIRLINES",
+        "number": 41,
+        "code": "KGK",
+        "validity": "2024-10-13",
+        "status": true,
+        "address": "Some Address 1/9",
+        "first_phone": "+996312560762",
+        "second_phone": "+996312560762",
+        "email": "skykg@mail.ru",
+        "kind_of_activity": 2
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 5,
+      "fields": {
+        "name": "HELI SKY",
+        "number": 47,
+        "code": "HAC",
+        "validity": "2025-05-30",
+        "status": true,
+        "address": "Some Address 109/1, Room 403",
+        "first_phone": "+996312394037",
+        "second_phone": "+996312394038",
+        "email": "helisky@mail.ru",
+        "kind_of_activity": 2
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 6,
+      "fields": {
+        "name": "AEROSTAN",
+        "number": 8,
+        "code": "BSC",
+        "validity": "2023-07-07",
+        "status": true,
+        "address": "Some address 116/1",
+        "first_phone": "+996312512488",
+        "second_phone": "SOME NUMBER",
+        "email": "aerostankr@gmail.com",
+        "kind_of_activity": 3
+      }
+    },
+    {
+      "model": "products.companies",
+      "pk": 7,
+      "fields": {
+        "name": "FLYSKY AIRLINES",
+        "number": 53,
+        "code": "FSQ",
+        "validity": "2024-08-30",
+        "status": true,
+        "address": "Some Address 82r, Building 6",
+        "first_phone": "+996312979300",
+        "second_phone": "+996312979400",
+        "email": "office@flysky.kg",
+        "kind_of_activity": 3
+      }
+    }
+  ]
+  

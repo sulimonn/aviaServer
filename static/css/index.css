@@ -1,0 +1,14 @@
+body {
+    padding-top: 100px;
+}
+
+#start-purchase-btn {
+    background-color: #23364e;
+    border-color: #23364e;
+    color: white;
+}
+
+#start-purchase-link {
+    text-decoration: none;
+    color: white;
+}

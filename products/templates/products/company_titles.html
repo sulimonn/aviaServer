@@ -1,0 +1,127 @@
+{% extends 'products/base.html' %}
+{% block css %}
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        input[type="checkbox"] {
+            margin: 0;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <table class="my-5">
+        <tr>
+            <th>Заголовок</th>
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <th>Доступ</th>
+            {% endif %}
+        </tr>
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        {% for title in titles %}
+            <tr>
+
+                 <td><a href="{% url 'supervision:control' company.pk %}" class="btn btn-secondary">{{ title.title }}</a></td>
+
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                <td><input type="checkbox"></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        {% endif %}
+
+        {% if request.user.is_authenticated and not request.user.is_superuser and user_has_access %}
+
+                {% for title in titles %}
+            <tr>
+
+                 <td><a href="{% url 'supervision:control' company.pk %}" class="btn btn-secondary">{{ title.title }}</a></td>
+
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                <td><input type="checkbox"></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+         {% endif %}
+    {% if request.user.is_superuser %}
+        {% for per in perm %}
+            <tr>
+            <td>
+                {{ per.user }}
+            </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+<td>
+    <a href="{% url 'supervision:control' company.pk %}" class="btn btn-secondary">{{ title.title }}</a>
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+       <button class="grant-access-btn" data-user-id="{{ user_id }}" data-url="{% url 'products:grant_access' %}">Предоставить доступ</button>
+
+    {% endif %}
+</td>
+
+
+    </table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+fetch('{% url 'products:grant_access' %}')
+
+</script>
+
+
+{% endblock %}
+

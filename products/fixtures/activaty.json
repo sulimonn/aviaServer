@@ -1,0 +1,25 @@
+[
+    {
+      "model": "products.KindOfActivity",
+      "pk": 1,
+      "fields": {
+        "name": "Пассажирские перевозки"
+      }
+    },
+    {
+      "model": "products.KindOfActivity",
+      "pk": 2,
+      "fields": {
+        "name": "Спецприменение"
+      }
+    },
+    {
+      "model": "products.KindOfActivity",
+      "pk": 3,
+      "fields": {
+        "name": "Грузовые перевозки"
+      }
+    }
+  ]
+  
+  

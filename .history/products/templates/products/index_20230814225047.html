@@ -1,0 +1,55 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% block css %}
+    <link href="{% static 'css/index.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/products.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content  %}
+
+<div class="d-flex main-pic">
+    <img class="m-auto" width="900px" src="/media/img/carusel.png">
+</div>
+<div class="d-flex main-label">
+    <h1 align="center" class="m-auto pb-5">Авиакомпании Кыргызской Республики</h1>
+</div>
+<div class="table-responsive">
+  
+    <table class="table px-3">
+      <thead>
+        <tr>
+          <th scope="col">№</th>
+          <th scope="col">Logo</th>
+          <th scope="col">Название авиакомпании/
+    Управленческий  персонал</th>
+          <th scope="col">Номер СЭ</th>
+          <th scope="col">КОД ИКАО</th>
+          <th scope="col">Эл. почта</th>
+          <th scope="col">Тел.</th>
+          <th scope="col">Адрес</th>
+          <th scope="col">Вид деятельности</th>
+        </tr>
+      </thead>
+        {% for company in companies %}
+    
+    
+      <tbody>
+        <tr>
+          <th scope="row">{{ company.id }}</th>
+          <td><img class="card-img-top" src="{% media '/media/Aero.jpg' %}" ></td>
+          <td>{{ company.name }}</td>
+          <td>{{ company.number }}</td>
+          <td>{{ company.code }}</td>
+          <td>{{ company.email }}</td>
+          <td>{{ company.phone1 }} {{ company.phone2 }}</td>
+          <td>{{ company.address }}</td>
+          <td>{{ company.kind_of_activity }}</td>
+        </tr>
+    
+      </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endblock %}
