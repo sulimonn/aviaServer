@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+    .chart-container {
+        position: relative;
+        display: flex;
+        margin-right: 800px;
+        width: 810px;
+        height: 400px;
+    }
+        .nav-tabs .nav-link:hover{
+            border: 1px solid #0a4275;
+        }
+        .nav-tabs .active:hover{
+            border-bottom: 1px solid transparent;
+        }
+</style>
+</head>
+<body>
+<ul class="nav nav-tabs pt-3" style="border-bottom: 1px solid #0a4275">
+  <li class="nav-item">
+    <a style="color: #0a4275;" class="nav-link" href="{% url 'index' %}">Главная</a>
+  </li>
+  <li class="nav-item">
+    <a  style="color: #0a4275;" class="nav-link" href="{% url 'supervision:control' company_slug=company_slug %}">Надзор</a>
+  </li>
+    <li>
+    <a style="
+            background-color: white;
+            color: #0a4275;
+            border-top: 1px solid #0a4275;
+            border-right: 1px solid #0a4275;
+            border-left: 1px solid #0a4275;
+" class="nav-link active" aria-current="page"  href="#">Статистика</a>
+  </li>
+</ul>
+
+<form method="get" class="form container my-4 input-group">
+    <label id="for-select" class="input-group-text">Выберите область</label>
+    <select aria-describedby="for-select" onchange="this.form.submit()" class="form-select col-10" aria-label="Default select example" name="select">
+    {% if select == None %}
+      <option selected>Все области проверки</option>
+        {% for area in areas %}
+            <option value="{{ area.pk }}">{{ area.title }}</option>
+        {% endfor %}
+    {% else %}
+        <option value="0">Все области проверки</option>
+
+        {% for area in areas %}
+            {% if select == area.pk %}
+            <option selected value="{{ area.pk }}">{{ area.title }}</option>
+            {% else %}
+            <option value="{{ area.pk }}">{{ area.title }}</option>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </select>
+</form>
+
+<div class="chart-container px-4">
+    <canvas id="barChart" width="600px"></canvas>
+    <canvas id="pieChart" width="600px"></canvas>
+</div>
+{% if comments|length != 0 %}
+<div class="container pt-5">
+    <h5>Предписания:</h5>
+    <ol class="list">
+        {% for title, comment in comments.items %}
+            <li>
+            <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84;"
+               href="{% url 'supervision:check_area_table' company_slug=company_slug %}?area={{ comment.area.pk }}&month={{ comment.month }}">
+                {{ comment.area.title }} в {{ comment.month }} месяце
+            </a>
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+
+const ctx = document.getElementById('pieChart').getContext('2d');
+const ctx2 = document.getElementById('barChart').getContext('2d');
+const data = JSON.parse('{{ data|escapejs }}');
+
+const labels = data.map(function(item) {
+            return item.category + ' (' + ((item.percentage * 100) / {{all_month}}).toFixed(3) + '%)';
+        });
+const labels_bar = data.map(function(item) {
+            return item.category
+        });
+const values = data.map(function(item) {
+    let perc = ((item.percentage * 100) / {{all_month}})
+    return perc
+});
+
+const config = {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: values,
+            backgroundColor: [
+                'rgba(6,211,26, 0.5)',
+                'rgba(255, 99, 132, 0.5)',
+                 'rgba(6,199,243,0.5)',
+                'rgba(124,124,124,0.5)',
+            ],
+            borderColor: [
+                'rgba(6,211,26, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(6,199,243,1)',
+                'rgba(75,75,75,1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+              position: "right",
+              align: "middle"
+          }
+        }
+
+    }
+};
+const config2 = {
+    type: 'bar',
+    data: {
+        labels: labels_bar,
+        datasets: [{
+            data: values,
+            backgroundColor: [
+                'rgba(6,211,26, 0.5)',
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(0,208,255,0.5)',
+                'rgba(124,124,124,0.5)',
+            ],
+            borderColor: [
+                'rgba(6,211,26, 0.9)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(6,199,243,1)',
+                'rgba(75,75,75,0.5)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false  // Hide the legend
+            }
+        }
+    }
+}
+
+const pieChart = new Chart(ctx, config);
+const barChart = new Chart(ctx2, config2);
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+</html>
