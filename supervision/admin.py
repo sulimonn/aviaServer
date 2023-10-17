@@ -1,5 +1,5 @@
 from django.contrib import admin
-from supervision.models import CheckArea, CheckMonth, Permission, OversightPeriod
+from supervision.models import CheckArea, CheckMonth, Permission, OversightPeriod, Deadline
 from documents.models import Checklist, Prescription, PKD, Approval, Elimination, Report, Notification
 
 
@@ -47,4 +47,5 @@ admin.site.register(Notification)
 admin.site.register(Elimination)
 admin.site.register(Report)
 admin.site.register(OversightPeriod)
+admin.site.register(Deadline)
 admin.site.register(Permission, PermissionAdmin)

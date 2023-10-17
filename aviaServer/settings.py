@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-m2-gqr&usl09ogms1(xd$+5w1u-zj4g&lhp$%^h&3vzm0h=3rj
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-url = "https://023f-91-247-63-56.ngrok-free.app"
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '023f-91-247-63-56.ngrok-free.app']
+url = "023f-91-247-63-56.ngrok-free.app"
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', url]
 
 # Application definition
 
@@ -59,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'aviaServer.urls'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 TEMPLATES = [
     {
@@ -144,7 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 CORS_ALLOWED_ORIGINS = [
-    url
+    "https://" + url
 ]
 
-CSRF_TRUSTED_ORIGINS = [url]
+CSRF_TRUSTED_ORIGINS = ["https://" + url]

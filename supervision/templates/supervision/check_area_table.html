@@ -156,7 +156,8 @@
   <li class="nav-item">
     <a style="color: #0a4275;" class="nav-link" href="{% url 'supervision:dashboard' company_slug=company_slug %}">Статистика</a>
   </li>
-  <li class="nav-item">
+    {% endif %}
+  <li class="nav-item px-3">
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         Период
@@ -168,7 +169,6 @@
       </ul>
     </div>
   </li>
-    {% endif %}
 
 <div class="info">
     <div class="info-item">
@@ -340,17 +340,17 @@
                 const btn = document.getElementById(form.lastElementChild.dataset.id)
                 console.log('Form submitted successfully:', data.check_month)
                 if (data.check_month === true){
-                    form.lastElementChild.style = "background-color: #ba212170"
+                    form.lastElementChild.style.backgroundColor = "#ba212170"
                     console.log(btn)
                     btn.disabled = false
                     btn.classList.remove('checkoff')
-                    btn.classList.add('checkon')
+                    btn.classList.add('notchecked')
                 }
                 if (data.check_month === false){
-                    form.lastElementChild.style = "background-color: #1e7e3444"
+                    form.lastElementChild.style.backgroundColor = "#1e7e3444"
                     btn.disabled = true
                     console.log(btn)
-                    btn.classList.remove('checkon')
+                    btn.classList.remove('notchecked')
                     btn.classList.add('checkoff')
                 }
             })

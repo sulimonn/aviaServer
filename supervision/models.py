@@ -4,6 +4,8 @@ from django.db import models
 from products.models import Company
 from datetime import datetime, timedelta
 
+from users.models import User
+
 
 class OversightPeriod(models.Model):
     start = models.DateField()
@@ -106,6 +108,11 @@ class CheckMonth(models.Model):
     area = models.ForeignKey(CheckArea, on_delete=models.CASCADE)
     date = models.DateField(blank=True, null=True)
 
+    def get_month_title(self):
+        russian_month_names = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                               'Октябрь', 'Ноябрь', 'Декабрь']
+        return russian_month_names[self.date.month - 1].lower()
+
     STATUS_CHOICES = (
         ('Checked', 'Проверено'),
         ('Checking', 'Проверяется'),
@@ -115,7 +122,7 @@ class CheckMonth(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='NotChecked')
 
     def __str__(self):
-        return str(self.month) + '-месяц ' + self.area.title + ' ' + self.area.company.name
+        return str(self.get_month_title()) + '-месяц ' + self.area.title + ' ' + self.area.company.name
 
     class Meta:
         verbose_name = 'Проверочный месяц'
@@ -134,3 +141,10 @@ class Permission(models.Model):
     class Meta:
         verbose_name = 'Доступ'
         verbose_name_plural = 'Доступы'
+
+
+class Deadline(models.Model):
+    until_the_deadline = models.DateField()
+    email_sent = models.BooleanField(default=False)
+    month = models.ForeignKey(CheckMonth, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

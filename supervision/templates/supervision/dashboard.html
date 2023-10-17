@@ -73,7 +73,7 @@
             <li>
             <a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84;"
                href="{% url 'supervision:check_area_table' company_slug=company_slug %}?area={{ comment.area.pk }}&month={{ comment.month }}">
-                {{ comment.area.title }} в {{ comment.month }} месяце
+                {{ comment.area.title }} в {{ comment.get_month_title }} месяце {{ comment.date.year }}
             </a>
             </li>
         {% endfor %}
@@ -109,13 +109,13 @@ const config = {
                 'rgba(6,211,26, 0.5)',
                 'rgba(255, 99, 132, 0.5)',
                  'rgba(6,199,243,0.5)',
-                'rgba(124,124,124,0.5)',
+                'rgba(124,124,124,0.33)',
             ],
             borderColor: [
                 'rgba(6,211,26, 1)',
                 'rgba(255, 99, 132, 1)',
                 'rgba(6,199,243,1)',
-                'rgba(75,75,75,1)',
+                'rgba(75,75,75,0.5)',
             ],
             borderWidth: 1
         }]
@@ -142,7 +142,7 @@ const config2 = {
                 'rgba(6,211,26, 0.5)',
                 'rgba(255, 99, 132, 0.5)',
                 'rgba(0,208,255,0.5)',
-                'rgba(124,124,124,0.5)',
+                'rgba(124,124,124,0.3)',
             ],
             borderColor: [
                 'rgba(6,211,26, 0.9)',

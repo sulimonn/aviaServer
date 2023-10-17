@@ -2,17 +2,22 @@
 import json
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from products.models import KindOfActivity, Company
 from supervision.models import CheckArea, Permission
-from supervision.forms import PrescriptionForm
+from users.views import is_superuser, user_passes_test
+from django.contrib import messages
+
+
+def my_view(request):
+    return messages.success(request, 'Your message here.')
 
 
 def index(request):
     context = None
     if request.user.is_authenticated:
-        context = {}
         if request.user.is_superuser:
             companies = Company.objects.all()
             for company in companies:
@@ -30,7 +35,7 @@ def index(request):
                 'title': 'Главная'
             }
         else:
-            list = {}
+            companies_list = {}
             permissions = Permission.objects.filter(user=request.user)
             companies = Company.objects.all()
             for company in companies:
@@ -41,7 +46,7 @@ def index(request):
                             has = True
                             break
                     if has:
-                        list.update({
+                        companies_list.update({
                             company.slug: company,
                         })
 
@@ -49,9 +54,10 @@ def index(request):
                 company.time_difference = company.validity - datetime.today().date()
             context = {
                 'activities': KindOfActivity.objects.all(),
-                'companies': list,
+                'companies': companies_list,
                 'title': 'Главная',
             }
+    my_view(request)
     return render(request, 'products/index.html', context)
 
 
@@ -64,6 +70,7 @@ def control(request):
     return render(request, 'products/control.html')
 
 
+@user_passes_test(is_superuser)
 def point(request, user_slug):
     from users.models import User
     user = User.objects.get(username=user_slug)
@@ -71,7 +78,7 @@ def point(request, user_slug):
     if user.groups.all().first().name == 'ins':
         permissions = Permission.objects.filter(user=user).order_by('id')
     companies = Company.objects.all()
-    list = {}
+    company_list = {}
     for company in companies:
         has = False
         areas = {}
@@ -87,7 +94,7 @@ def point(request, user_slug):
                             }
                         })
                         has = True
-            list.update({
+            company_list.update({
                 company.name: {
                     'company': company,
                     'perm': has,
@@ -95,7 +102,7 @@ def point(request, user_slug):
                 }
             })
         else:
-            list.update({
+            company_list.update({
                 company.name: {
                     'company': company,
                     'perm': has,
@@ -103,7 +110,7 @@ def point(request, user_slug):
             })
 
     context = {
-        'companies': list,
+        'companies': company_list,
         'user': user,
         'title': 'Доступ'
     }
@@ -120,6 +127,7 @@ def company_titles(request, company_id):
     return render(request, 'products/company_detail.html', context)
 
 
+@user_passes_test(is_superuser)
 def grant_access(request, user_slug):
     if request.method == 'POST':
         print(request.POST)
@@ -139,6 +147,7 @@ def grant_access(request, user_slug):
         return JsonResponse({'message': 'Недопустимый запрос.'}, status=400)
 
 
+@user_passes_test(is_superuser)
 def update_perm(request, user_slug):
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')

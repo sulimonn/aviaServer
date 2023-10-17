@@ -1,5 +1,6 @@
 from django.urls import path
-from supervision.views import control, supervise, post, update_check_month, dashboard, move_check, update_move_check, get_moved
+from supervision.views import control, supervise, update_check_month, dashboard
+from documents.views import move_check, update_move_check, get_moved, post
 
 app_name = "supervision"
 
