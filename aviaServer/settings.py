@@ -13,6 +13,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 from django.views.decorators.csrf import csrf_protect
+from decouple import config
 
 # @csrf_protect
 # def your_view(request):
@@ -24,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m2-gqr&usl09ogms1(xd$+5w1u-zj4g&lhp$%^h&3vzm0h=3rj'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-url = "e9ac-91-247-59-163.ngrok-free.app"
+url = config('HOST_NAME')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', url]
 
 # Application definition
@@ -86,11 +87,11 @@ WSGI_APPLICATION = 'aviaServer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aviabase',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
@@ -159,16 +160,20 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'check_expiry': {
         'task': 'supervision.tasks.check_expiry',
-        'schedule': timedelta(hours=24),
+        'schedule': timedelta(days=15),
+    },
+    'check_deadline': {
+        'task': 'supervision.tasks.check_deadline',
+        'schedule': timedelta(days=1),
     },
 }
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Замените на SMTP-сервер, который вы используете
-EMAIL_PORT = 587  # Порт вашего SMTP-сервера
-EMAIL_HOST_USER = 'gsuli836@gmail.com'  # Ваш адрес электронной почты
-EMAIL_HOST_PASSWORD = 'kesw lhor hdks sckq'  # Ваш пароль
-EMAIL_USE_TLS = True  # Использовать TLS (рекомендуется)
-DEFAULT_FROM_EMAIL = 'gsuli836@gmail.com'  # Адрес, от имени которого будет отправляться письмо
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')

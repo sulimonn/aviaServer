@@ -148,6 +148,11 @@ class Permission(models.Model):
 
 class Deadline(models.Model):
     until_the_deadline = models.IntegerField()
-    email_sent = models.BooleanField(default=False)
+    first_email_sent = models.BooleanField(default=False)
+    second_email_sent = models.BooleanField(default=False)
+    last_email_sent = models.BooleanField(default=False)
     month = models.ForeignKey(CheckMonth, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user}  {self.until_the_deadline} {self.month} {self.month.area}'

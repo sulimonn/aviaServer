@@ -14,7 +14,7 @@ class ChecklistForm(forms.ModelForm):
         model = Checklist
         fields = ['month', 'files', 'comment']
         widgets = {
-            'files': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'files': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -33,8 +33,8 @@ class PrescriptionForm(forms.ModelForm):
         model = Prescription
         fields = ['letter', 'fine_protocol']
         widgets = {
-            'letter': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
-            'fine_protocol': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'})
+            'letter': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'fine_protocol': forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
 
 
@@ -44,8 +44,8 @@ class PKDForm(forms.ModelForm):
         model = PKD
         fields = ['letter', 'pkd']
         widgets = {
-            'letter': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
-            'pkd': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'letter': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'pkd': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -55,7 +55,7 @@ class ApprovalForm(forms.ModelForm):
         model = Approval
         fields = ['approval', 'deadline']
         widgets = {
-            'approval': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'approval': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'deadline': forms.DateInput(
                                 format=('%Y-%m-%d'),
                                 attrs={'class': 'form-control',
@@ -70,7 +70,7 @@ class EliminationForm(forms.ModelForm):
         model = Elimination
         fields = ['letter']
         widgets = {
-            'letter': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'letter': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -80,7 +80,7 @@ class ReportForm(forms.ModelForm):
         model = Report
         fields = ['report']
         widgets = {
-            'report': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'report': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -90,7 +90,7 @@ class NotificationForm(forms.ModelForm):
         model = Notification
         fields = ['letter']
         widgets = {
-            'letter': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'letter': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -99,7 +99,7 @@ class MovedForm(forms.ModelForm):
         model = Moved
         fields = ['raport']
         widgets = {
-            'raport': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
+            'raport': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 

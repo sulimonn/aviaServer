@@ -1,9 +1,14 @@
+import json
+
 from django.contrib import auth, messages
+from django.http import JsonResponse
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.urls import reverse
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from products.models import Company
+from supervision.models import Permission, CheckArea
+from supervision.tasks import check_deadline, check_expiry
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from users.models import User
 
@@ -99,3 +104,88 @@ def create_company(request):
         form = CompanyForm()
 
     return render(request, 'users/register_avia.html', {'form': form, 'title': 'Регистрация'})
+
+
+@user_passes_test(is_superuser)
+def point(request, user_slug):
+    from users.models import User
+    user = User.objects.get(username=user_slug)
+    permissions = None
+    if user.groups.all().first().name == 'ins':
+        permissions = Permission.objects.filter(user=user).order_by('id')
+    companies = Company.objects.all()
+    company_list = {}
+    for company in companies:
+        has = False
+        areas = {}
+        if permissions:
+            check_areas = CheckArea.objects.filter(company=company)
+            for ch in check_areas:
+                for per in permissions:
+                    if company == per.area.company:
+                        areas.update({
+                            per.area: {
+                             'area': per.area,
+                             'perm': per.access
+                            }
+                        })
+                        has = True
+            company_list.update({
+                company.name: {
+                    'company': company,
+                    'perm': has,
+                    'areas': areas
+                }
+            })
+        else:
+            company_list.update({
+                company.name: {
+                    'company': company,
+                    'perm': has,
+                }
+            })
+
+    context = {
+        'companies': company_list,
+        'user': user,
+        'title': 'Доступ'
+    }
+    return render(request, 'users/point.html', context)
+
+
+@user_passes_test(is_superuser)
+def grant_access(request, user_slug):
+    if request.method == 'POST':
+        company_id = int(request.POST['company_id'])
+        if Permission.objects.filter(area__company__id=company_id, user__username=user_slug).exists():
+            perm = Permission.objects.filter(area__company__id=company_id, user__username=user_slug)
+            perm.delete()
+        else:
+            from users.models import User
+            user = User.objects.get(username=user_slug)
+            areas = CheckArea.objects.filter(company__id=company_id)
+            for area in areas:
+                perm = Permission(area=area, user=user)
+                perm.save()
+            check_deadline()
+            check_expiry()
+        return redirect('users:point', user_slug=user_slug)
+    else:
+        return JsonResponse({'message': 'Недопустимый запрос.'}, status=400)
+
+
+@user_passes_test(is_superuser)
+def update_perm(request, user_slug):
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body_data = json.loads(body_unicode)
+        area_id = body_data.get('area_id')
+        perm = Permission.objects.get(area__id=area_id, user__username=user_slug)
+        perm.access = not perm.access
+        perm.save()
+        if perm.access:
+            return JsonResponse({'message': True})
+        else:
+            return JsonResponse({'message': False})
+    else:
+        return JsonResponse({'message': 'Недопустимый запрос.'}, status=400)

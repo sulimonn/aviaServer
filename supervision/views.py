@@ -13,6 +13,8 @@ from django.http import JsonResponse, HttpResponseNotFound
 from datetime import datetime, timedelta
 import locale
 from django.contrib.auth.decorators import user_passes_test
+
+from supervision.tasks import check_deadline, check_expiry
 from users.views import is_superuser
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
@@ -172,6 +174,8 @@ def update_check_month(request, check_month_id):
     if request.method == 'POST':
         check_month.checking = not check_month.checking
         check_month.save()
+        check_deadline()
+        check_expiry()
     return JsonResponse({'check_month': check_month.checking})
 
 
