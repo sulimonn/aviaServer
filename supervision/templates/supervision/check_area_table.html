@@ -157,6 +157,7 @@
     <a style="color: #0a4275;" class="nav-link" href="{% url 'supervision:dashboard' company_slug=company_slug %}">Статистика</a>
   </li>
     {% endif %}
+{% if check_areas != None %}
   <li class="nav-item px-3">
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -169,7 +170,6 @@
       </ul>
     </div>
   </li>
-
 <div class="info">
     <div class="info-item">
         <span class="info-check info-checked"></span>
@@ -188,7 +188,10 @@
         <span class="info-label">Перенесено</span>
     </div>
 </div>
+    {% endif %}
 </ul>
+
+{% if check_areas != None %}
 <table class="table table-bordered text-center">
     <thead>
      <tr>
@@ -362,6 +365,30 @@
 
 
 </script>
+{% endif %}
+{% else %}
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Выберите период</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'supervision:period' company_slug=company_slug %}">
+                        {% csrf_token %}
+                        <label for="{{ period_form.start.id_for_label }}">Выберите начало нового периода проверки</label>
+                        <div>
+                            {{ period_form.start }}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endif %}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>

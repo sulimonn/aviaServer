@@ -1,9 +1,12 @@
 import json
+
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from documents.views import get_checklist
-from supervision.forms import CheckMonthForm
+from products.models import Company
+from supervision.forms import CheckMonthForm, OversightPeriodForm
 from supervision.models import CheckArea, CheckMonth, Permission, OversightPeriod, Deadline
 from documents.models import Checklist
 from django.http import JsonResponse, HttpResponseNotFound
@@ -49,19 +52,34 @@ def control(request, company_slug):
     today = datetime.today().date()
     if 'period' in request.GET:
         period = request.GET['period']
-        date = OversightPeriod.objects.get(company__slug=company_slug, period=period)
+        try:
+            date = OversightPeriod.objects.get(company__slug=company_slug, period=period)
+        except OversightPeriod.DoesNotExist:
+            date = None
     else:
-        date = OversightPeriod.objects.get(start__lt=today, end__gt=today, company__slug=company_slug)
-
+        try:
+            date = OversightPeriod.objects.filter(company__slug=company_slug).first()
+        except OversightPeriod.DoesNotExist:
+            date = None
+    if date is None:
+        context = {
+            'check_areas': None,
+            'company_slug': company_slug,
+            'period_form': OversightPeriodForm()
+        }
+        return render(request, 'supervision/check_area_table.html', context)
     table_html = table_date(date)
     check = []
     check_areas = None
-
-    if request.user.groups.all().first().name == 'avia' or request.user.is_superuser:
+    if request.user.is_superuser or request.user.groups.all().first().name == 'avia':
         check_areas = CheckArea.objects.filter(company__slug=company_slug).order_by('id')
     elif request.user.groups.all().first().name == 'ins':
         check_areas = Permission.objects.filter(area__company__slug=company_slug, user=request.user,
                                                 access=True).order_by('id')
+        if not check_areas.exists():
+            return HttpResponseNotFound('<div style="display:flex;width:100vw; margin-top: 30vh;">'
+                                        '   <h1 style="margin:auto;">Page Does Not Exist...</h1>'
+                                        '</div>')
     for check_area in check_areas:
 
         months = {}
@@ -69,21 +87,16 @@ def control(request, company_slug):
             check_month = None
             if request.user.groups.all().first().name == 'avia' or request.user.is_superuser:
                 check_month = CheckMonth.objects.get(area=check_area, month=i)
-                if not request.user.is_superuser:
+            elif request.user.groups.all().first().name == 'ins':
+                check_month = CheckMonth.objects.get(area=check_area.area, month=i)
+                if not request.user.is_superuser and check_month.checking:
                     permission = Permission.objects.filter(area=check_month.area, user=request.user)
                     if permission.exists():
                         deadline = Deadline.objects.filter(user=request.user, month=check_month)
-                        if deadline.exists():
-                            deadline = deadline.first()
-                            if not deadline.email_sent:
-                                if deadline.until_the_deadline - today >= 10:
-                                    deadline.email_sent = True
-                                    deadline.save()
-                        else:
-                            deadline = Deadline(user=request.user, until_the_deadline=(check_month.date - today), email_sent=False, months=check_month)
+                        if not deadline.exists():
+                            days = (check_month.date - today).days
+                            deadline = Deadline.objects.create(user=request.user, until_the_deadline=days, month=check_month)
                             deadline.save()
-            elif request.user.groups.all().first().name == 'ins':
-                check_month = CheckMonth.objects.get(area=check_area.area, month=i)
             months[i] = check_month
         if request.user.groups.all().first().name == 'avia' or request.user.is_superuser:
             check.append((check_area, months))
@@ -92,6 +105,7 @@ def control(request, company_slug):
 
     form = CheckMonthForm()
     context = {
+        'range': range(1, 21),
         'check_areas': check,
         'table_html': table_html,
         'form1': form,
@@ -99,11 +113,6 @@ def control(request, company_slug):
         'periods': OversightPeriod.objects.filter(company__slug=company_slug)
     }
     return render(request, 'supervision/check_area_table.html', context)
-
-
-def create_period(request, company_slug):
-
-    return redirect('supervision:control', company_slug=company_slug)
 
 
 @login_required
@@ -144,16 +153,15 @@ def dashboard(request, company_slug):
         {'category': 'Без предписаний', 'percentage': checked},
         {'category': 'Предписание', 'percentage': checking},
         {'category': 'Еще не проверено', 'percentage': not_checked},
-        {'category': 'Непроверочные', 'percentage': out_check},
+        #{'category': 'Непроверочные', 'percentage': out_check},
     ]
-
     context = {
         'company_slug': company_slug,
         'data': json.dumps(data),
         'areas': areas,
         'select': select,
         'comments': comments,
-        'all_month': not_checked + checked + checking + out_check
+        'all_month': not_checked + checked + checking #+ out_check
     }
     return render(request, 'supervision/dashboard.html', context)
 
@@ -179,8 +187,7 @@ def supervise(request, company_slug):
     try:
         ch_area = CheckMonth.objects.get(month=month, area__id=area)
         if ch_area.checking:
-            checklist, ch_exists = get_checklist(0, area, month)
-            context = checklist
+            context, ch_exists = get_checklist(0, area, month)
             perm = Permission.objects.filter(user=request.user)
             return render(request, 'supervision/supervise.html', {
                 'group': groups,
@@ -201,3 +208,21 @@ def supervise(request, company_slug):
                                     '</div>')
 
 
+def create_period(request, company_slug):
+    if request.method == 'POST':
+        form = OversightPeriodForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['start']
+            end_date = start_date + relativedelta(months=+20)
+            company = Company.objects.get(slug=company_slug)
+            period = f'{start_date.year}-{end_date.year}'
+
+            oversight_period = OversightPeriod.objects.create(
+                start=start_date,
+                end=end_date,
+                company=company,
+                period=period
+            )
+            oversight_period.save()
+
+            return redirect('supervision:control', company_slug=company_slug)

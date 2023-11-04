@@ -13,6 +13,9 @@ class OversightPeriod(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     period = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.company} - {self.period}"
+
     class Meta:
         verbose_name = 'Период надзора'
         verbose_name_plural = 'Периоды надзора'
@@ -144,7 +147,7 @@ class Permission(models.Model):
 
 
 class Deadline(models.Model):
-    until_the_deadline = models.DateField()
+    until_the_deadline = models.IntegerField()
     email_sent = models.BooleanField(default=False)
     month = models.ForeignKey(CheckMonth, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

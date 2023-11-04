@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import os
 from django.views.decorators.csrf import csrf_protect
@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-m2-gqr&usl09ogms1(xd$+5w1u-zj4g&lhp$%^h&3vzm0h=3rj
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-url = "023f-91-247-63-56.ngrok-free.app"
+url = "e9ac-91-247-59-163.ngrok-free.app"
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', url]
 
 # Application definition
@@ -149,3 +149,26 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://" + url]
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BEAT_SCHEDULE = {
+    'check_expiry': {
+        'task': 'supervision.tasks.check_expiry',
+        'schedule': timedelta(hours=24),
+    },
+}
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Замените на SMTP-сервер, который вы используете
+EMAIL_PORT = 587  # Порт вашего SMTP-сервера
+EMAIL_HOST_USER = 'gsuli836@gmail.com'  # Ваш адрес электронной почты
+EMAIL_HOST_PASSWORD = 'kesw lhor hdks sckq'  # Ваш пароль
+EMAIL_USE_TLS = True  # Использовать TLS (рекомендуется)
+DEFAULT_FROM_EMAIL = 'gsuli836@gmail.com'  # Адрес, от имени которого будет отправляться письмо

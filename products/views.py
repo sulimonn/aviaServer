@@ -57,7 +57,6 @@ def index(request):
                 'companies': companies_list,
                 'title': 'Главная',
             }
-    my_view(request)
     return render(request, 'products/index.html', context)
 
 
@@ -130,7 +129,6 @@ def company_titles(request, company_id):
 @user_passes_test(is_superuser)
 def grant_access(request, user_slug):
     if request.method == 'POST':
-        print(request.POST)
         company_id = int(request.POST['company_id'])
         if Permission.objects.filter(area__company__id=company_id, user__username=user_slug).exists():
             perm = Permission.objects.filter(area__company__id=company_id, user__username=user_slug)
@@ -139,6 +137,7 @@ def grant_access(request, user_slug):
             from users.models import User
             user = User.objects.get(username=user_slug)
             areas = CheckArea.objects.filter(company__id=company_id)
+            print(areas)
             for area in areas:
                 perm = Permission(area=area, user=user)
                 perm.save()

@@ -1,5 +1,8 @@
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
 from django import forms
-from supervision.models import CheckMonth
+from supervision.models import CheckMonth, OversightPeriod
 from documents.models import Checklist, Prescription, PKD, Approval, Elimination, Report, Notification, Moved
 
 
@@ -98,3 +101,20 @@ class MovedForm(forms.ModelForm):
         widgets = {
             'raport': forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
         }
+
+
+class OversightPeriodForm(forms.ModelForm):
+    current = datetime.today().date()
+    start = forms.DateField(
+        widget=forms.SelectDateWidget(
+            years=range(current.year, current.year + 10)
+        )
+    )
+
+    class Meta:
+        model = OversightPeriod
+        fields = ['start']
+
+    def __init__(self, *args, **kwargs):
+        super(OversightPeriodForm, self).__init__(*args, **kwargs)
+        self.fields['start'].initial = datetime.today().date()
