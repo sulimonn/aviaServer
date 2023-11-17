@@ -5,5 +5,9 @@ python-decouple
 djangorestframework
 datetime
 psycopg2-binary
+<<<<<<< HEAD
 Pillow
 redis
+=======
+Pillow
+>>>>>>> 72b7a2605ffb139044fd537e384121298d0c01c0
