@@ -273,7 +273,6 @@ def get_checklist(checklist_id, area=0, month=0):
         context = {
             str(checklist.count) + 'checklist': checklist,
         }
-        print(checklist.files.field.name)
         if not checklist.comment:
             if checklist.count == 1:
                 return context, False
