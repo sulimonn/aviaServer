@@ -1,5 +1,20 @@
 # Oversight Program
 
+***Add to your project .env file with variables:***
+```
+      SECRET_KEY=<SECRET_KEY>
+      EMAIL_HOST=smtp.gmail.com
+      EMAIL_PORT=587
+      EMAIL_HOST_USER=<EMAIL>
+      EMAIL_HOST_PASSWORD=<EMAIL-PASSWORD>
+      HOST_NAME=<HOST>
+      DB_NAME=<DATABASE-NAME>
+      DB_USER=<DB-USERNAME>
+      DB_PASSWORD=<PASSWORD>
+      DB_HOST=<DB-HOST>
+      DB_PORT=5432
+```
+
 To start the program, follow these steps:
 
 1. **Install Dependencies**:
