@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+
+from celery.schedules import crontab
 from django.views.decorators.csrf import csrf_protect
 from decouple import config
 
@@ -165,6 +167,10 @@ CELERY_BEAT_SCHEDULE = {
     'check_deadline': {
         'task': 'supervision.tasks.check_deadline',
         'schedule': timedelta(days=1),
+    },
+    'check_begins': {
+        'task': 'supervision.tasks.check_begins',
+        'schedule': crontab(minute='0', hour='7', day_of_month='1'),
     },
 }
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

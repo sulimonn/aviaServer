@@ -46,4 +46,16 @@ def check_expiry():
             deadline.delete()
 
 
-__all__ = ('check_expiry', 'check_deadline')
+@shared_task
+def check_begins():
+    now = timezone.now()
+    for perm in Permission.objects.filter(access=True):
+        for month in CheckMonth.objects.filter(area=perm.area, date__month=now.month, checking=True):
+            if month.status != 'Checked' or month.status != 'Moved':
+                email = perm.user.email
+                subject = 'Уведомление о начало проверки'
+                message = f'Здравствуйте, {perm.user.first_name} {perm.user.last_name}! Проверка {month.area.title} в компании {perm.area.company.name} начинается в этом месяце'
+                send_mail(subject, message, config('EMAIL_HOST_USER'), [email])
+
+
+__all__ = ('check_expiry', 'check_deadline', 'check_begins')

@@ -157,6 +157,7 @@ def dashboard(request, company_slug):
         {'category': 'Еще не проверено', 'percentage': not_checked},
         #{'category': 'Непроверочные', 'percentage': out_check},
     ]
+
     context = {
         'company_slug': company_slug,
         'data': json.dumps(data),

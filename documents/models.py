@@ -65,11 +65,13 @@ class Checklist(models.Model):
         super().save(*args, **kwargs)
         if self.comment and self.month:
             self.month.status = 'Checking'
+            self.month.save()
         if not self.original and not self.comment and self.month:
             self.month.status = 'Checked'
+            self.month.save()
         if self.count == 3:
             self.month.status = 'NotChecked'
-        self.month.save()
+            self.month.save()
 
     def delete(self, using=None, keep_parents=False):
         month = self.month

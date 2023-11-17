@@ -115,7 +115,7 @@
                     {% if not user.is_superuser %}
                     {% if user.groups.all.first.name != 'avia' %}
                          <tr>
-                                <td><a href="{% url 'products:point' user_slug=user.username%}?">{{ user.username }}</a></td>
+                                <td><a href="{% url 'users:point' user_slug=user.username%}?">{{ user.username }}</a></td>
                                 <td>{{ user.email }}</td>
                             </tr>
                     {% endif %}
