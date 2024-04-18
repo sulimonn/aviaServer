@@ -82,12 +82,20 @@ def user_list(request):
     from supervision.models import Permission
     perms = Permission.objects.all()
     users = User.objects.all()
-    companies = Company.objects.all()
     context = {
         'users': users,
         'perms': perms,
+        'title': 'Инспекторы'}
+    return render(request, 'users/user_list.html', context)
+
+
+@user_passes_test(is_superuser)
+def companies_list(request):
+    companies = Company.objects.all()
+    print(companies)
+    context = {
         'companies': companies,
-        'title': 'Пользователи'}
+        'title': 'Компании'}
     return render(request, 'users/user_list.html', context)
 
 
@@ -99,7 +107,7 @@ def create_company(request):
         if form.is_valid():
             instance = form.save()
             instance.save()
-            return redirect('users:user_list')  # Redirect to a success page
+            return redirect('users:companies_list')  # Redirect to a success page
     else:
         form = CompanyForm()
 
@@ -189,3 +197,17 @@ def update_perm(request, user_slug):
             return JsonResponse({'message': False})
     else:
         return JsonResponse({'message': 'Недопустимый запрос.'}, status=400)
+
+
+@user_passes_test(is_superuser)
+def delete_user(request, user_slug):
+    user = User.objects.get(username=user_slug)
+    user.delete()
+    return redirect('users:user_list')
+
+
+@user_passes_test(is_superuser)
+def delete_company(request, company_slug):
+    company = Company.objects.get(slug=company_slug)
+    company.delete()
+    return redirect('users:user_list')

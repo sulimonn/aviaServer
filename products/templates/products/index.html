@@ -4,135 +4,137 @@
     <link href="{% static 'css/index.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/products.css' %}" rel="stylesheet"/>
     <style>
-.col {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: space-evenly;
-    column-gap: 10px;
-    row-gap: 20px;
-}
+        .col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            justify-content: space-evenly;
+            column-gap: 10px;
+            row-gap: 20px;
+        }
 
-@media screen and (max-width: 768px) {
-    .col {
-        grid-template-columns: 1fr 1fr;
-    }
-}
+        @media screen and (max-width: 768px) {
+            .col {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
 
-@media screen and (max-width: 480px) {
-    .col {
-        grid-template-columns: 1fr;
-    }
-}
-    .card {
-        --main-focus: #2d8cf0;
-        --font-color: #323232;
-        --font-color-sub: #666;
-        --bg-color: #fff;
-        --main-color: #323232;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        width: 250px;
-        height: 100%;
-        margin: 0 auto;
-        background: var(--bg-color);
-        border: 2px solid var(--main-color);
-        box-shadow: 4px 4px var(--main-color);
-        border-radius: 5px;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-    }
+        @media screen and (max-width: 480px) {
+            .col {
+                grid-template-columns: 1fr;
+            }
+        }
 
-.card-content-wrapper {
-  transform: translateY(10px);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  transition: all 0.7s;
-}
+        .card {
+            --main-focus: #2B4156;
+            --font-color: #323232;
+            --font-color-sub: #666;
+            --bg-color: #0261A9;
+            --main-color: #323232;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            width: 250px;
+            height: 100%;
+            margin: 0 auto;
+            background: transparent;
+            border: 2px solid var(--main-color);
+            box-shadow: 4px 4px var(--main-color);
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-.card-title {
-  letter-spacing: 3px;
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--font-color);
-}
+        .card-content-wrapper {
+            transform: translateY(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            transition: all 0.7s;
+        }
 
-.card-price {
-  letter-spacing: 2px;
-  font-size: 20px;
-    line-height: 15px;
-    margin-bottom: 5px;
-  color: var(--font-color);
-  font-weight: 700;
-}
+        .card-title {
+            letter-spacing: 3px;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--font-color);
+        }
 
-.card-price span {
-  font-size: 15px;
-  color: var(--font-color-sub);
-  font-weight: 500;
-}
+        .card-price {
+            letter-spacing: 2px;
+            font-size: 20px;
+            line-height: 15px;
+            margin-bottom: 5px;
+            color: var(--font-color);
+            font-weight: 700;
+        }
 
-.card-subtitle {
-  letter-spacing: 2px;
-  font-size: 17px;
-  color: var(--main-focus);
-  font-weight: 500;
-}
+        .card-price span {
+            font-size: 15px;
+            color: var(--font-color-sub);
+            font-weight: 500;
+        }
 
-.card-benefits {
-  font-size: 15px;
-  padding-left: 20px;
-  color: var(--font-color);
-}
 
-.card-btn {
-  cursor: pointer;
-  width: 100px;
-  padding: 5px;
-  background: var(--main-focus);
-  border: none;
-  border-radius: 5px;
-  margin: 0 auto;
-  transform: translateY(30px);
-  color: var(--bg-color);
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.7px;
-  opacity: 0;
-  transition: all 0.7s;
-}
+        .card-benefits {
+            font-size: 15px;
+            padding-left: 20px;
+            color: var(--font-color);
+        }
 
-.card:hover > .card-btn {
-  opacity: 1;
-  transform: translateY(17px);
-}
+        .card-btn {
+            cursor: pointer;
+            width: auto;
+            padding: 10px 15px;
+            background: var(--main-focus);
+            border: none;
+            border-radius: 30px;
+            margin: 0 auto;
+            color: white;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.7px;
+            transition: all 0.7s;
+        }
 
-.card-btn:hover {
-  font-weight: 700;
-  letter-spacing: 1px;
-}
+        .card > .card-btn {
+            opacity: 1;
+        }
 
-.card:hover > .card-content-wrapper {
-  transform: translateY(5px);
-}
+        .card-btn:hover {
+            color: white;
+            background-color: var(--bg-color);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .card:hover > .card-content-wrapper {
+            transform: translateY(5px);
+        }
+        .card-footer{
+            display: flex;
+            flex-direction: column;
+            border: none !important;
+            color: #0f0f0f;
+            background-color: transparent !important;
+        }
     </style>
 {% endblock %}
 {% block content %}
-<div class="container-sm mt-5">
-    <img src="/media/img/plane_0.png" class="img-fluid mx-auto d-block" alt="...">
-    <div class="overlay"></div>
-</div>
-    {% if request.user.is_authenticated %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <br>
-            <h1 class="text-center">Авиакомпании <br> Кыргызской Республики</h1>
-            <br>
-        </div>
+    <div class="container-sm mt-5">
+        <img src="/media/img/plane_0.png" class="img-fluid mx-auto d-block" alt="...">
+        <div class="overlay"></div>
     </div>
+    {% if request.user.is_authenticated %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <h1 class="text-center">Авиакомпании <br> Кыргызской Республики</h1>
+                    <br>
+                </div>
+            </div>
 
-    {% if request.user.groups.all.first.name == 'avia' %}
+            {% if request.user.groups.all.first.name == 'avia' %}
                 <div class="card">
                     <div class="card-content-wrapper">
                         <div class="card-title"> {{ forloop.counter }}. {{ company.name }}</div>
@@ -140,71 +142,79 @@
                             <span>{{ company.kind_of_activity }}</span>
                         </div>
                         <ul class="card-benefits">
-                                <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта</li>
-                                <li>Статус СЕ:
-                                    {% if company.status %}
+                            <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта</li>
+                            <li>Статус СЕ:
+                                {% if company.status %}
                                     Действующий
-                                    {% else %}
-                                        Приостановлен
-                                    {% endif %}
-                                </li>
+                                {% else %}
+                                    Приостановлен
+                                {% endif %}
+                            </li>
                         </ul>
                     </div>
-                    <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
-                    <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
+                    <div class="card-footer">
+                        <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                        <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a></div>
                 </div>
-    {% elif request.user.is_superuser %}
-            <div class="col">
-        {% for company in companies %}
-                <div class="card">
-                    <div class="card-content-wrapper">
-                        <div class="card-title"> {{ forloop.counter }}. {{ company.name }}</div>
-                        <div class="card-price">
-                            <span>{{ company.kind_of_activity }}</span>
+            {% elif request.user.is_superuser %}
+                <div class="col">
+                    {% for company in companies %}
+                        <div class="card">
+                            <div class="card-content-wrapper">
+                                <div class="card-title"> {{ forloop.counter }}. {{ company.name }}</div>
+                                <div class="card-price">
+                                    <span>{{ company.kind_of_activity }}</span>
+                                </div>
+                                <ul class="card-benefits">
+                                    <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта
+                                    </li>
+                                    <li>Статус СЕ:
+                                        {% if company.status %}
+                                            Действующий
+                                        {% else %}
+                                            Приостановлен
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                                <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
+                            </div>
                         </div>
-                        <ul class="card-benefits">
-                                <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта</li>
-                                <li>Статус СЕ:
-                                    {% if company.status %}
-                                    Действующий
-                                    {% else %}
-                                        Приостановлен
-                                    {% endif %}
-                                </li>
-                        </ul>
-                    </div>
-                    <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
-                    <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
+                    {% endfor %}
                 </div>
-        {% endfor %}
+            {% else %}
+                <div class="col">
+                    {% for key, company in companies.items %}
+                        <div class="card">
+                            <div class="card-content-wrapper">
+                                <div class="card-title"> {{ forloop.counter }}. {{ company.name }}</div>
+                                <div class="card-price">
+                                    <span>{{ company.kind_of_activity }}</span>
+                                </div>
+                                <ul class="card-benefits">
+                                    <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта
+                                    </li>
+                                    <li>Статус СЕ:
+                                        {% if company.status %}
+                                            Действующий
+                                        {% else %}
+                                            Приостановлен
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="card-footer">
+                                <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                                <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-    {% else %}
-        <div class="col">
-        {% for key, company in companies.items %}
-                <div class="card">
-                    <div class="card-content-wrapper">
-                        <div class="card-title"> {{ forloop.counter }}. {{ company.name }}</div>
-                        <div class="card-price">
-                            <span>{{ company.kind_of_activity }}</span>
-                        </div>
-                        <ul class="card-benefits">
-                                <li>{{ company.time_difference.days }} дня до окончания сертификата эксплуатанта</li>
-                                <li>Статус СЕ:
-                                    {% if company.status %}
-                                    Действующий
-                                    {% else %}
-                                        Приостановлен
-                                    {% endif %}
-                                </li>
-                        </ul>
-                    </div>
-                    <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
-                    <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
-                </div>
-        {% endfor %}
-        </div>
-    {% endif %}
-</div>
     {% else %}
         <div class="container mt-5">
         <div class="m-auto d-flex">

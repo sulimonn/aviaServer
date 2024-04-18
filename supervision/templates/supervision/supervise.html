@@ -194,10 +194,14 @@
                     <h5>{{ value.over }}</h5>
                 {% else %}
                 {% if group == 'ins' and key == 'iform' or group == 'ins' and key == 'form' or request.user.is_superuser and key == 'form' or request.user.is_superuser and key == 'iform' %}
-
+    {% if value.expired %}
+        <p style="color: #ba2121">{{ value.expired }} {{ value.todeadline }}</p>
+        {% else %}
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ChecklistModal">
                         Загрузить файлы
                     </button>
+                    <div>{{ value.todeadline }}</div>
+        {% endif %}
                     <script>
                     document.body.insertAdjacentHTML('beforeend', '<div class="modal" tabindex="-1" id="ChecklistModal" aria-labelledby="ChecklistModalLabel" aria-hidden="true">' +
                         '      <div class="modal-dialog" id="prId">' +

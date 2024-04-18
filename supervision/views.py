@@ -87,7 +87,7 @@ def control(request, company_slug):
         months = {}
         for i in range(1, 21):
             check_month = None
-            if request.user.groups.all().first().name == 'avia' or request.user.is_superuser:
+            if request.user.is_superuser or request.user.groups.all().first().name == 'avia' :
                 check_month = CheckMonth.objects.get(area=check_area, month=i)
             elif request.user.groups.all().first().name == 'ins':
                 check_month = CheckMonth.objects.get(area=check_area.area, month=i)
@@ -100,7 +100,7 @@ def control(request, company_slug):
                             deadline = Deadline.objects.create(user=request.user, until_the_deadline=days, month=check_month)
                             deadline.save()
             months[i] = check_month
-        if request.user.groups.all().first().name == 'avia' or request.user.is_superuser:
+        if request.user.is_superuser or request.user.groups.all().first().name == 'avia':
             check.append((check_area, months))
         else:
             check.append((check_area.area, months))
@@ -186,7 +186,10 @@ count: int = 1
 def supervise(request, company_slug):
     global count
     count = 1
-    groups = request.user.groups.all().first().name
+    if request.user.is_superuser:
+        groups = 'admin'
+    else:
+        groups = request.user.groups.all().first().name
     area = int(request.GET['area'])
     month = int(request.GET['month'])
     try:

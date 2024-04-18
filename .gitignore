@@ -26,7 +26,9 @@ var/
 .installed.cfg
 *.egg
 .history
-./.history
+/.history
+/.idea
+.idea
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

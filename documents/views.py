@@ -16,7 +16,6 @@ from users.views import is_superuser
 russian_month_names = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 
 
-# Create your views here.
 @user_passes_test(is_superuser)
 def move_check(request, company_slug, area_id):
     months = CheckMonth.objects.filter(area_id=int(area_id)).order_by('month')
@@ -417,6 +416,16 @@ def get_elimination(checklist_id):
                 context = {
                     f'form': form_data
             }
+            else:
+                form_data = {
+                    'saveto': 'elim',
+                    'expired': 'Срок устранения истек. Письмо не отправлено.',
+                    'checklist_id': checklist.pk,
+                    'todeadline': app.deadline - datetime.today().date()
+                }
+                context = {
+                    f'form': form_data
+                }
         else:
             form_data = {
                 'saveto': 'elim',

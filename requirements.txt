@@ -1,9 +1,9 @@
-django
+django~=5.0.4
 django-cors-headers
-celery
+celery~=5.3.4
 python-decouple
-djangorestframework
+djangorestframework~=3.14.0
 datetime
 psycopg2-binary
-Pillow
-redis
+Pillow~=10.3.0
+redis~=5.0.1

@@ -1,136 +1,151 @@
 {% extends 'products/base.html' %}
 {% block css %}
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    h1 {
-        text-align: center;
-        padding: 20px;
-        background-color: #0a4275;
-        color: white;
-        margin: 0;
-    }
-
-    .table-container {
-        margin: 20px;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-        padding: 12px 15px;
-        text-align: left;
-    }
-
-    th {
-        padding: 17px 15px;
-        background-color: #0a4275;
-        color: white;
-    }
-    tr:hover{
-        background-color: rgba(10, 66, 117, 0.3);
-    }
-    .user_label th{
-
-        padding: 12px 15px;
-        background-color: rgba(10, 66, 117, 0.68);
-    }
-
-    .dropdown-toggle{
-        color: rgba(10, 66, 117, 0.68);
-        border-color: rgba(10, 66, 117, 0.68);
-    }
-    .dropdown-toggle:hover, .dropdown-toggle:active{
-        color: rgba(255, 255, 255);
-        border-color: rgba(10, 66, 117, 0.68);
-        background-color: rgba(10, 66, 117, 0.68);
-    }
-    @media (max-width: 768px) {
-        table {
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 8px 10px;
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
-            font-size: 24px;
-            padding: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color: #0a4275;
+            color: white;
+            margin: 0;
         }
 
         .table-container {
-            margin: 10px;
+            margin: 20px;
+            overflow-x: auto;
         }
-    }
 
-</style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            padding: 17px 15px;
+            background-color: #0a4275;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: rgba(10, 66, 117, 0.3);
+        }
+
+        .user_label th {
+
+            padding: 12px 15px;
+            background-color: rgba(10, 66, 117, 0.68);
+        }
+
+        .dropdown-center button, td button {
+            border-color: #0a4275 !important;
+            color: #0a4275 !important;
+        }
+
+        .dropdown-center button:hover,
+        td button:hover {
+            border-color: #0a4275 !important;
+            background-color: #0a4275 !important;
+            color: white !important;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                padding: 10px;
+            }
+
+        }
+
+    </style>
 {% endblock %}
 {% block content %}
     <div class="container mt-5" style="padding-top: 70px">
+        <h3>Список авиакомпании</h3>
         <table>
             <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                </tr>
+            <tr>
+                <th>Название</th>
+                <th>
+                    Почта
+                </th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
 
-                <tr class="user_label">
-                    <th colspan="2">
-                            Компании
-                    </th>
-                </tr>
+            {% if title == 'Компании' %}
+                {% for company in companies %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'products:company_detail' company_slug=company.slug %}?">{{ company.name }}</a>
+                        </td>
+                        <td>{{ company.email }}</td>
+
+                        <td>
+                            <a href="{% url 'users:delete_company' company_slug=company.slug %}">
+                                <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
+                                    Удалить
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                2
                 {% for user in users %}
                     {% if not user.is_superuser %}
-                    {% if user.groups.all.first.name == 'avia' %}
-                        {% for company in companies %}
-                            {% if company.user == user %}
+                        {% if user.groups.all.first.name != 'avia' %}
                             <tr>
-                                <td><a href="{% url 'products:company_detail' company_slug=company.slug %}?">{{ user.username }}</a></td>
+                                <td>
+                                    <a href="{% url 'users:point' user_slug=user.username %}?">{{ user.username }}</a>
+                                </td>
                                 <td>{{ user.email }}</td>
+                                <td>
+                                    <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
+                                        <a href="{% url 'users:delete_user' user_slug=user.username %}">Удалить</a>
+                                    </button>
+                                </td>
                             </tr>
                         {% endif %}
-                        {% endfor %}
-                    {% endif %}
                     {% endif %}
                 {% endfor %}
-                <tr class="user_label">
-                    <th colspan="2">
-                        Инспекторы
-                    </th>
-                </tr>
-                {% for user in users %}
-                    {% if not user.is_superuser %}
-                    {% if user.groups.all.first.name != 'avia' %}
-                         <tr>
-                                <td><a href="{% url 'users:point' user_slug=user.username%}?">{{ user.username }}</a></td>
-                                <td>{{ user.email }}</td>
-                            </tr>
-                    {% endif %}
-                    {% endif %}
-                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
-        <div class="dropdown-center m-3">
-          <button class="btn btn-outline-primary dropdown-toggle p-3" style="padding: 6px 5px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Добавить пользователя
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item  text-black-50" href="{% url 'users:register' %}">Добавить инспектора</a></li>
-            <li><a class="dropdown-item text-black-50" href="{% url 'users:register_avia' %}">Добавить авиакомпанию</a></li>
-          </ul>
+        <div class="dropdown-center my-3">
+            {% if title == 'Компании' %}
+                <a class="text-black-50" href="{% url 'users:register_avia' %}">
+                    <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
+                        Добавить компанию
+                    </button>
+                </a>
+            {% else %}
+                <a class="text-black-50" href="{% url 'users:register' %}">
+                    <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
+                        Добавить инспектора
+                    </button>
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

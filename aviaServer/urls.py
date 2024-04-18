@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
 from products.views import index
+from django.urls import path, include
 
-
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', index, name='index'),
