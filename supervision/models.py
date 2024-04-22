@@ -1,9 +1,8 @@
 import calendar
-
 from django.db import models
 from products.models import Company
-from datetime import datetime, timedelta
-
+from datetime import datetime 
+from dateutil.relativedelta import relativedelta
 from users.models import User
 
 
@@ -85,20 +84,20 @@ class CheckArea(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        i = 1
-        start_date = self.period.start
-        end_date = self.period.end
-        while start_date <= end_date:
-            _, last_day = calendar.monthrange(start_date.year, start_date.month)
-            check_month = CheckMonth(
-                checking=False,
-                month=i,
-                area=self,
-                date=datetime(start_date.year, start_date.month, last_day).date()
-            )
-            check_month.save()
-            start_date += timedelta(days=31)
-            i += 1
+        #i = 1
+        #start_date = self.period.start
+        #end_date = self.period.end
+        #while start_date <= end_date:
+        #    _, last_day = calendar.monthrange(start_date.year, start_date.month)
+        #    check_month = CheckMonth(
+        #        checking=False,
+        #        month=i,
+        #        area=self,
+        #        date=datetime(start_date.year, start_date.month, last_day).date()
+        #    )
+        #    check_month.save()
+        #    start_date += timedelta(days=31)
+        #    i += 1
 
     class Meta:
         verbose_name = "Область проверки"
@@ -114,7 +113,8 @@ class CheckMonth(models.Model):
     def get_month_title(self):
         russian_month_names = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
                                'Октябрь', 'Ноябрь', 'Декабрь']
-        return russian_month_names[self.date.month - 1].lower()
+        if self.date:
+            return russian_month_names[self.date.month - 1].lower()
 
     STATUS_CHOICES = (
         ('Checked', 'Проверено'),
@@ -126,6 +126,21 @@ class CheckMonth(models.Model):
 
     def __str__(self):
         return str(self.get_month_title()) + '-месяц ' + self.area.title + ' ' + self.area.company.name
+    
+    def save(self, *args, **kwargs):
+        start_date = self.area.period.start
+        start_date += relativedelta(months=self.month)
+        _, last_day = calendar.monthrange(start_date.year, start_date.month)
+        print(self.month)
+        self.date=datetime(start_date.year, start_date.month, last_day).date()
+        #end_date = self.period.end
+        #while start_date <= end_date:
+        #    check_month = CheckMonth(
+        #        checking=False,
+        #        month=i,
+        #        area=self,
+        #    )
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Проверочный месяц'

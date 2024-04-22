@@ -57,6 +57,11 @@
             color: #267dcc;
             text-decoration: underline;
         }
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, p {
+            margin: 0;
+            padding: 0;
+            line-height: normal;
+        }
     :root{
         --bs-btn_bg: #0a4275;
         --bs-btn-border-color: #0a4275;
@@ -70,8 +75,9 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: white;">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'products:index' %}"><img height="60px" src="{% static 'logo_ru.png' %}"
-                                                                       alt="logo"></a>
+        <a class="navbar-brand" href="{% url 'products:index' %}">
+            <img height="60px" src="{% static 'logo_ru.png' %}" alt="logo">
+        </a>
         <button style="color: #0a4275" class="navbar-toggler dark" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,8 +99,8 @@
                     </li>
                     {% if request.user.is_authenticated and request.user.is_superuser %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:companies_list' %}">Авиакомпании </a>
-                        </li>
+                            <a class="nav-link" href="{% url 'products:companies_list' %}">Авиакомпании </a>
+                        </li> 
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'users:user_list' %}">Инспекторы </a>
                         </li>
@@ -161,7 +167,7 @@
                 </div>
                 <div id="block-scaa-copyright" class="text-center copyright graytextcolor block block-block-content">
                     <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item">
-                        <p>Copyright © <span class="year">2023</span> Государственное агентство ГА</p>
+                        <p>Copyright © <span class="year">2024</span> Государственное агентство ГА</p>
                     </div>
                 </div>
             </div>

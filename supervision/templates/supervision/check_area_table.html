@@ -5,56 +5,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Надзор</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<style>
-        .area-title{
+    <style>
+        .area-title {
         }
-        button, input{
+
+        button, input {
             outline: none;
         }
-        .ops_td{
+
+        .ops_td {
             writing-mode: vertical-rl;
             -webkit-writing-mode: vertical-rl;
             text-orientation: mixed;
             margin: 5px;
         }
+
         .ops_td::first-letter {
             text-transform: capitalize;
         }
+
         table {
-          width: 50px;
+            width: 50px;
         }
-        .checkoff{
-            background-color: rgba(124,124,124,0.1);
+
+        .checkoff {
+            background-color: rgba(124, 124, 124, 0.1);
             border: none;
         }
-        .checked{
-           background-color: rgba(8, 252, 20, 0.5);
+
+        .checked {
+            background-color: rgba(8, 252, 20, 0.5);
             border: none;
             transition: .2s linear;
         }
-        .checked:hover{
-           background-color: rgba(8, 252, 20, 1);
+
+        .checked:hover {
+            background-color: rgba(8, 252, 20, 1);
         }
-        .notchecked{
+
+        .notchecked {
             background-color: rgba(252, 8, 16, 0.5);
             border: none;
-            transition: .2s ;
+            transition: .2s;
         }
-        .notchecked:hover{
+
+        .notchecked:hover {
             background-color: rgba(252, 8, 16, 1);
 
         }
-        .checking{
+
+        .checking {
             background-color: rgba(248, 215, 2, 0.5);
             border: none;
             transition: .2s linear;
         }
-        .checking:hover{
-           background-color: rgba(248, 215, 2, 1);
+
+        .checking:hover {
+            background-color: rgba(248, 215, 2, 1);
         }
-        .absol{
+
+        .absol {
             width: 100%;
             height: 100%;
             left: 0;
@@ -62,27 +75,32 @@
             top: 0;
             bottom: 0;
         }
-        .updating{
+
+        .updating {
             border: none;
             cursor: pointer;
         }
-        .updating:hover{
+
+        .add-btn:hover {
             background-color: rgb(33, 158, 186)
         }
-        .moved{
+
+        .moved {
             background-color: rgba(8, 65, 252, 0.5);
             border: none;
             transition: .2s linear;
 
         }
-        .moved:hover{
+
+        .moved:hover {
             background-color: rgba(8, 65, 252, 1);
         }
-        th{
+
+        th {
             border-width: 1px;
         }
 
-        .info{
+        .info {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             width: 50%;
@@ -94,304 +112,374 @@
             border-left: 1px solid #0a4275;
             margin: 0 25px 0 auto;
         }
-        .info-item{
+
+        .info-item {
             color: rgba(0, 0, 0, 0.88);
             font-size: 12px;
             display: flex;
             align-items: center;
             column-gap: 6px;
             justify-content: center;
+            padding-right: 1em;
+            padding-left: 1em;
         }
-        .info-check{
+
+        .info-check {
             width: 45px;
             height: 20px;
         }
-        .info-label{
+
+        .info-label {
             line-height: 12px;
             display: inline-flex;
             margin: 0;
             padding: 0;
         }
-        .info-checked{
+
+        .info-checked {
             background-color: rgba(8, 252, 20, 0.5);
             border: 1px solid rgba(8, 252, 20, 1);
         }
-        .info-checking{
+
+        .info-checking {
             background-color: rgba(248, 215, 2, 0.5);
             border: 1px solid rgba(248, 215, 2, 1);
         }
-        .info-notchecked{
+
+        .info-notchecked {
             background-color: rgba(252, 8, 16, 0.5);
             border: 1px solid rgba(252, 8, 16, 1);
 
         }
-        .info-moved{
+
+        .info-moved {
             background-color: rgba(8, 65, 252, 0.5);
             border: 1px solid rgba(8, 65, 252, 1);
 
         }
-        .nav-tabs .nav-link:hover{
+
+        .nav-tabs{
+            flex-wrap: nowrap;
+        }
+        .nav-tabs .nav-link:hover {
             border: 1px solid #0a4275;
         }
-        .nav-tabs .active:hover{
+
+        .nav-tabs .active:hover {
             border-bottom: 1px solid transparent;
         }
+        .add-btn{
+            background-color: rgba(28,137,161,0.63)
+        }
+        .delete-btn{
+            background-color: rgba(183, 33, 33);
+        }
+        :root{
+            --bs-btn_bg: #0a4275;
+            --bs-btn-border-color: #0a4275;
+            --bs-btn-hover-bg:  #267dcc;
+            --bs-btn-hover-border-color: #267dcc;
+        }
+        .btn-outline-primary{
+            border-color: var(--bs-btn_bg);
+            color: var(--bs-btn_bg);
+            border-bottom: none;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:focus-within{
+            border-color: var(--bs-btn_bg);
+            background-color: var(--bs-btn_bg);
+            color: white;
+        }
+        .dropdown{
+            display: flex;
+            height: 100%;
+        }
+        .dropdown-menu{
+            inset: unset;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .dropdown-item{
+            text-align: center;
+        }
+        
     </style>
+    {% if request.user.is_superuser %}
+    
+    <script>
+        async function handleDelete(e) {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = form.children[1]
+            submitBtn.disabled = true
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', 
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                },
+            };
+        
+            try {
+                const response = await fetch(form.action, requestOptions);
+                if (response.ok) {
+                    const data = await response.json()
+                    submitBtn.disabled = false
+                    form.action = data.url 
+                    form.children[1].classList.toggle('add-btn');
+                    form.children[1].classList.remove('delete-btn')
+                } else {
+                    console.error('Failed to send data:', response.statusText);
+                }
+            } catch (error) {
+                // Handle network or other errors
+                console.error('Error:', error);
+            }
+        }
+        
+
+        async function handleAdd(e){
+            e.preventDefault()
+            const form = e.target;
+            const submitBtn = form.children[1]
+            submitBtn.disabled = true
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded', 
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                },
+            };
+        
+            try {
+                const response = await fetch(form.action, requestOptions);
+                if (response.ok) {
+                    const data = await response.json();
+                    submitBtn.disabled = false
+                    form.action = data.url 
+                    form.children[1].classList.toggle('delete-btn');
+                    form.children[1].classList.remove('add-btn');
+                } else {
+                    console.error('Failed to send data:', response.statusText);
+                }
+            } catch (error) {
+                // Handle network or other errors
+                console.error('Error:', error);
+            }
+        }
+    </script>
+    {% endif %}
+
 </head>
 <body>
-<ul class="nav nav-tabs pt-3" style="border-bottom: 1px solid #0a4275">
-  <li class="nav-item">
-    <a style="color: #0a4275;" class="nav-link" href="{% url 'index' %}">Главная</a>
-  </li>
-  <li class="nav-item">
-    <a style="
+<nav class="nav nav-tabs pt-3" style="border-bottom: 1px solid #0a4275">
+    <div class="nav-item">
+        <a style="color: #0a4275;" class="nav-link" href="{% url 'index' %}">Главная</a>
+    </div>
+    <div class="nav-item">
+        <a style="
             background-color: white;
             color: #0a4275;
             border-top: 1px solid #0a4275;
             border-right: 1px solid #0a4275;
-            border-left: 1px solid #0a4275;
-" class="nav-link active" aria-current="page" href="#">Надзор</a>
-  </li>
+            border-left: 1px solid #0a4275;" class="nav-link active" aria-current="page" href="#">Надзор</a>
+    </div>
     {% if request.user.is_superuser %}
-  <li class="nav-item">
-    <a style="color: #0a4275;" class="nav-link" href="{% url 'supervision:dashboard' company_slug=company_slug %}">Статистика</a>
-  </li>
+        <div class="nav-item">
+            <a style="color: #0a4275;" class="nav-link"
+               href="{% url 'supervision:dashboard' company_slug=company_slug %}">Статистика</a>
+        </div>
     {% endif %}
-{% if check_areas != None %}
-  <li class="nav-item px-3">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #0261A9;">
-        Период
-      </button>
-      <ul class="dropdown-menu">
-          {% for period in periods %}
-        <li><a class="dropdown-item" href="?period={{ period.period }}">{{ period.period }}</a></li>
-          {% endfor %}
-      </ul>
-    </div>
-  </li>
-<div class="info">
-    <div class="info-item">
-        <span class="info-check info-checked"></span>
-        <span class="info-label">Проверено</span>
-    </div>
-    <div class="info-item">
-        <span class="info-check info-checking"></span>
-        <span class="info-label">В процессе<br> устранения замечаний</span>
-    </div>
-    <div class="info-item">
-        <span class="info-check info-notchecked"></span>
-        <span class="info-label">Плановая проверка</span>
-    </div>
-    <div class="info-item">
-        <span class="info-check info-moved"></span>
-        <span class="info-label">Перенесено</span>
-    </div>
-</div>
+    {% if check_areas != None %}
+        <div class="nav-item">
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle px-3" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Период
+                </button>
+                <ul class="dropdown-menu">
+                    {% for period in periods %}
+                        <li><a class="dropdown-item" href="?period={{ period.period }}">{{ period.period }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% if request.user.is_superuser %}
+        <div class="nav-item">
+            {% if not edit %}
+                <a style="color: #0a4275;" href="{% url 'supervision:edit' company_slug=company_slug %}" class="nav-link">
+                    Изменить
+                </a>
+            {% else %}
+                <a style="color: #0a4275;" href="{% url 'supervision:control' company_slug=company_slug %}" class="nav-link">
+                    Готово
+                </a>
+            {% endif %}
+        </div>
+        {% endif %}
+        <div class="info">
+            <div class="info-item">
+                <span class="info-check info-checked"></span>
+                <span class="info-label">Проверено</span>
+            </div>
+            <div class="info-item">
+                <span class="info-check info-checking"></span>
+                <span class="info-label">Замечания устраняются</span>
+            </div>
+            <div class="info-item">
+                <span class="info-check info-notchecked"></span>
+                <span class="info-label">Плановая проверка</span>
+            </div>
+            <div class="info-item">
+                <span class="info-check info-moved"></span>
+                <span class="info-label">Перенесено</span>
+            </div>
+        </div>
     {% endif %}
-</ul>
+    </nav>
 
 {% if check_areas != None %}
-<table class="table table-bordered text-center">
-    <thead>
-     <tr>
-            <th rowspan="4" class="align-middle"  style="border-top-color: transparent;">№</th>
+    <table class="table table-bordered text-center" style="position:relative; left: 0; right: 0; top: 0;">
+        <thead>
+        <tr>
+            <th rowspan="4" class="align-middle" style="border-top-color: transparent;">№</th>
             <th rowspan="4" class="align-middle" style="border-top-color: transparent">Область проверки</th>
-            <th colspan="20" style="border-top-color: transparent">Двадцать месяцев после даты получения СЭ и два месяца до продления СЭ</th>
+            <th colspan="20" style="border-top-color: transparent">Двадцать месяцев после даты получения СЭ и два месяца
+                до продления СЭ
+            </th>
         </tr>
-            {{ table_html|safe }}
+        {{ table_html|safe }}
         <tr>
 
             {% for i in range %}
-              <td id="m{{i}}">{{ i }}</td>
+                <td id="m{{ i }}">{{ i }}</td>
             {% endfor %}
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
 
-     {% for check_area, months in check_areas %}
-      <tr class="">
-        <th scope="row" class="area-title">{{ forloop.counter }}</th>
-        <td class="text-left area-title" id="t{{check_area.id}}">{{ check_area.title }}</td>
-            {% for key, month in months.items %}
-                <td class="empty-cell p-0 position-relative stable">
-                    <a {% if month.status == 'Moved' %}
-                        href="{% url 'supervision:moved' company_slug=company_slug%}?area={{check_area.pk}}&month={{month.month}}">
-                        {% else %}
-                        href="{% url 'supervision:check_area_table' company_slug=company_slug%}?area={{check_area.pk}}&month={{month.month}}">
-                        {% endif %}
-                        {%if month.checking %}
-                        <button class="position-absolute
-                           {% if month.status == 'NotChecked' %}
-                        notchecked
-                        {% elif month.status == 'Checked' %}
-                        checked
-                        {% elif month.status == 'Checking' %}
-                        checking
-                        {% elif month.status == 'Moved' %}
-                        moved
-                        {% endif %}
-                        absol btn-hover"
-                                data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
-                                type="submit" id="{{forloop.counter}}{{check_area.pk}}">
-                        </button>
-                        {% else %}
-                        <button class="position-absolute checkoff absol btn-hover"
-                                disabled
-                                data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
-                                type="submit"  id="{{forloop.counter}}{{check_area.pk}}">
-                        </button>
-                        {%endif%}
-                    </a>
-                </td>
-                {% if request.user.is_superuser %}
-                <td class="empty-cell p-0 position-relative update" hidden="hidden">
-                    <form  id="updateForm" class="position-absolute update-form absol" method="post"
-                          action="{% url 'supervision:update_check_month' check_month_id=month.id %}">
-                      {% csrf_token %}
-                        <input type="checkbox" name="checking" id="id_checking" checked hidden>
-                        {% if month.checking %}
-                            <button style="background-color: rgba(183, 33, 33)" class="position-absolute updating absol btn-hover"
-                                    type="button" data-id="{{forloop.counter}}{{check_area.pk}}"
-                                    data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}">
-                            </button>
-                        {% else %}
-                            <button style="background-color: rgba(28,137,161,0.63)" class="position-absolute updating absol btn-hover"
-                                    type="button" data-id="{{forloop.counter}}{{check_area.pk}}"
-                                    data-title="t{{check_area.id}}" data-int="m{{forloop.counter}}"
+        {% for check_area, months in check_areas %}
+            <tr class="">
+                <th scope="row" class="area-title">{{ forloop.counter }}</th>
+                <td class="text-left area-title" id="t{{ check_area.id }}">{{ check_area.title }}</td>
+                {% for key, month in months.items %}
+                    {% if not edit %}
+                        <td class="empty-cell p-0 position-relative">
+                            {% if month.month %}
+                                {% if month.status == 'Moved' %}
+                                   <a  href="{% url 'supervision:moved' company_slug=company_slug %}?area={{ check_area.pk }}&month={{ month.month }}">
+                                {% else %}
+                                <a href="{% url 'supervision:check_area_table' company_slug=company_slug %}?area={{ check_area.pk }}&month={{ month.month }}">
+                                {% endif %}
+                                {% if month.checking %}
+                                    <button class="position-absolute
+                                     {% if month.status == 'NotChecked' %}
+                                    notchecked
+                                    {% elif month.status == 'Checked' %}
+                                    checked
+                                    {% elif month.status == 'Checking' %}
+                                    checking
+                                    {% elif month.status == 'Moved' %}
+                                    moved
+                                    {% endif %}
+                                    absol btn-hover"
+                                            data-title="t{{ check_area.id }}" data-int="m{{ forloop.counter }}"
+                                            type="submit" id="{{ forloop.counter }}{{ check_area.pk }}">
+                                    </button>
+                                {% else %}
+                                    <button class="position-absolute checkoff absol btn-hover"
+                                            disabled
+                                            data-title="t{{ check_area.id }}" data-int="m{{ forloop.counter }}"
+                                            type="submit" id="{{ forloop.counter }}{{ check_area.pk }}">
+                                    </button>
+                                {% endif %}
+                                </a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    {% if request.user.is_superuser and edit %}
+                        <td class="empty-cell p-0 position-relative update">
+                            {% if month.month %}
+                                <form id="updateForm" class="position-absolute update-form absol"
+                                      action="{% url 'supervision:delete_check_month' month_id=month.id %}"
+                                      onsubmit="handleDelete(event);"
+                                      data-month={{month.month}}
+                                      >
+                                    {% csrf_token %}
+                                    <button class="position-absolute updating absol btn-hover delete-btn"
+                                            type="submit"
+                                            >
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form id="updateForm" class="position-absolute update-form absol"
+                                      action="{% url 'supervision:add_check_month' area_id=check_area.pk month_id=month.key %}"
+                                      onsubmit="handleAdd(event);"
+                                      >
+                                    {% csrf_token %}
+                                    <button class="position-absolute updating absol btn-hover add-btn"
+                                            type="submit"  
                                     >
-                            </button>
-                        {% endif %}
-                    </form>
-                  </td>
-                {% endif %}
-            {% endfor %}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    {% endif %}
 
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% if request.user.is_superuser %}
-     <button type="button" id="update" class="btn btn-secondary">Изменить</button>
-     <button type="submit" id="submit-all" hidden="hidden" class="btn btn-success">Готово</button>
+                {% endfor %}
 
-<script>
-    const update = document.getElementById('update')
-    const stable = document.getElementById('submit-all')
-    update.addEventListener('click', () => {
-        let stable = document.getElementsByClassName('stable')
-        for (let i = 0; i < stable.length; i++) {
-            stable[i].hidden = true
-        }
-        let update = document.getElementsByClassName('update')
-        for (let i = 0; i < update.length; i++) {
-            update[i].hidden = false
-        }
-        const submit = document.getElementById('submit-all')
-        const updbtn = document.getElementById('update')
-        submit.hidden = false
-        updbtn.hidden = true
-    })
-    stable.addEventListener('click', function() {
-        let stable = document.getElementsByClassName('stable')
-        for (let i = 0; i < stable.length; i++) {
-            stable[i].hidden = false
-        }
-        let update = document.getElementsByClassName('update')
-        for (let i = 0; i < update.length; i++) {
-            update[i].hidden = true
-        }
-        const submit = document.getElementById('submit-all')
-        const updbtn = document.getElementById('update')
-        submit.hidden = true
-        updbtn.hidden = false
-    });
-    const btnHover = document.getElementsByClassName('btn-hover')
-
-    for (let i = 0; i < btnHover.length; i++) {
-        const btn = btnHover[i]
-        btn.addEventListener('mouseenter', (e) => {
-            document.getElementById(e.target.dataset.title).style.backgroundColor = 'rgba(252, 8, 16, 0.5)';
-            document.getElementById(e.target.dataset.int).style.backgroundColor = 'rgba(252, 8, 16, 0.5)';
-        })
-        btn.addEventListener('mouseleave', (e) => {
-            document.getElementById(e.target.dataset.title).style.backgroundColor = 'transparent';
-            document.getElementById(e.target.dataset.int).style.backgroundColor = 'transparent';
-        });
-    }
-
-    const buttons = document.getElementsByClassName('updating')
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', (e) => {
-            let form = e.target.parentNode;
-            let formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const btn = document.getElementById(form.lastElementChild.dataset.id)
-                console.log('Form submitted successfully:', data.check_month)
-                if (data.check_month === true){
-                    form.lastElementChild.style.backgroundColor = "#ba212170"
-                    console.log(btn)
-                    btn.disabled = false
-                    btn.classList.remove('checkoff')
-                    btn.classList.add('notchecked')
-                }
-                if (data.check_month === false){
-                    form.lastElementChild.style.backgroundColor = "#1e7e3444"
-                    btn.disabled = true
-                    console.log(btn)
-                    btn.classList.remove('notchecked')
-                    btn.classList.add('checkoff')
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-            });
-        })
-    }
-
-
-</script>
-{% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+   
 {% else %}
+{% if request.user.is_superuser %}
     <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center">Выберите период</h2>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="{% url 'supervision:period' company_slug=company_slug %}">
-                        {% csrf_token %}
-                        <label for="{{ period_form.start.id_for_label }}">Выберите начало нового периода проверки</label>
-                        <div>
-                            {{ period_form.start }}
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block mt-3">Отправить</button>
-                    </form>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">Выберите период</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'supervision:period' company_slug=company_slug %}">
+                            {% csrf_token %}
+                            <label for="{{ period_form.start.id_for_label }}">Выберите начало нового периода
+                                проверки</label>
+                            <div>
+                                {{ period_form.start }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block mt-3">Отправить</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+    {% else %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h3>Ожидается потвреждения начало периода проверки
+                </h3>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endif %}
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 

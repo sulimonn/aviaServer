@@ -22,6 +22,9 @@
             .col {
                 grid-template-columns: 1fr;
             }
+            .unauth{
+                font-size:large;
+            }
         }
 
         .card {
@@ -84,10 +87,10 @@
         .card-btn {
             cursor: pointer;
             width: auto;
-            padding: 10px 15px;
+            padding: 5px 15px;
             background: var(--main-focus);
             border: none;
-            border-radius: 30px;
+            border-radius: 10px;
             margin: 0 auto;
             color: white;
             font-weight: 500;
@@ -111,6 +114,7 @@
             transform: translateY(5px);
         }
         .card-footer{
+            padding-bottom: 0;
             display: flex;
             flex-direction: column;
             border: none !important;
@@ -153,7 +157,7 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                        <a href="{% url 'products:edit_company' company.slug %}" class="card-btn mb-1">Подробнее</a>
                         <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a></div>
                 </div>
             {% elif request.user.is_superuser %}
@@ -178,7 +182,7 @@
                                 </ul>
                             </div>
                             <div class="card-footer">
-                                <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                                <a href="{% url 'products:edit_company' company.slug %}" class="card-btn mb-1">Подробнее</a>
                                 <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
                             </div>
                         </div>
@@ -207,7 +211,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <a href="{% url 'products:company_detail' company.slug %}" class="card-btn mb-1">Подробнее</a>
+                                <a href="{% url 'products:edit_company' company.slug %}" class="card-btn mb-1">Подробнее</a>
                                 <a href="{% url 'supervision:control' company.slug %}" class="card-btn">Надзор</a>
                             </div>
                         </div>
@@ -217,13 +221,13 @@
         </div>
     {% else %}
         <div class="container mt-5">
-        <div class="m-auto d-flex">
-            <h2 class="m-auto">
+        <div class="m-auto d-flex text-center">
+            <h2 class="m-auto unauth">
                 Добро пожаловать в сайт Отдел летной эксплуатации (OPS)!
             </h2>
         </div>
         <div class="m-auto d-flex py-5">
-            <p class="m-auto text-primary">
+            <p class="m-auto text-primary text-center">
                 Чтобы продолжить <a class="alert-link" href="{% url 'users:login' %}">войдите</a>
             </p>
 

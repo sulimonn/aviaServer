@@ -1,11 +1,11 @@
 from products.views import index
-from .views import company_detail, control, company_titles
+from .views import  companies_list, create_company, edit_company
 from django.urls import path
 
 app_name = 'products'
 urlpatterns = [
     path('', index, name='index'),
-    path('company_detail/<slug:company_slug>/', company_detail, name='company_detail'),
-    path('control/', control, name='control'),
-    path('company/<int:company_id>/', company_titles, name='company_titles'),
+    path('companies/', companies_list, name='companies_list'),
+    path('companies/add', create_company, name='register_avia'),
+    path('companies/<slug:company_slug>/', edit_company, name='edit_company'),
 ]

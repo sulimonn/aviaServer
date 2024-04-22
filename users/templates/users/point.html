@@ -1,58 +1,73 @@
 {% extends 'products/base.html' %}
 {% block css %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
         }
-        h1 {
-            text-align: center;
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            margin: 0;
+
+        .permission-title{
+            margin-top: 100px;
+            padding: 20px 0;
         }
 
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        th, td {
+        .row:not(.head) .col-9,.row:not(.head) .col-3{
             padding: 6px;
             border: 1px solid #ddd;
             text-align: left;
             align-items: center;
         }
 
-        th {
-            background-color: #333;
+        .row{
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .row.head {
+            padding: 10px 5px;
+            background-color: var(--bs-btn_bg);
             color: #fff;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
 
         a {
             text-decoration: none;
-            color: #333;
+            color: var(--bs-btn_bg);
             font-weight: bold;
         }
-
+        .btn-primary,
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus,
+        .btn-outline-primary:focus-within{
+            border-color: var(--bs-btn_bg) !important;
+            background-color: var(--bs-btn_bg);
+            color: white;
+        }
+        .btn-outline-primary{
+            border-color: var(--bs-btn_bg);
+            color: var(--bs-btn_bg)
+        }
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:focus-within
+        {   color: white;
+            border-color: var(--bs-btn-hover-bg);
+            background-color: var(--bs-btn-hover-bg);
+        }
         a:hover {
             color: #0066cc;
         }
 
-        @media screen and (max-width: 600px) {
-            th, td {
-                padding: 8px 5px;
+        @media screen and (max-width: 575px){
+            .permission-title h4{
+                font-size: 20px;
+            }
+            .head h5{
+                font-size: 16px;
             }
         }
+
+ 
         @media (prefers-reduced-motion: reduce) {
         .collapsing {
             transition-property: height, visibility;
@@ -62,142 +77,99 @@
     </style>
 {% endblock %}
 {% block content %}
-    <div class="container-lg mt-5 d-flex">
-    <div class="col-4">
-        <table style="width: 100%">
-            <thead>
-            <tr>
-                <th colspan="2">
-                    Информация о инспекторе
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Имя</th>
-                    <td>{{ user.first_name }}</td>
-                </tr>
+    <div class="container mt-5">
+        <div class="permission-title w-100">
+            <h4>Доступы {{ inspector.first_name }} {{ inspector.last_name }}</h4>
+        </div> 
+            <div class="row head">
+                <div class="col-9 col-md-10"><h5>Название компании</h5></div>
+                <div class="col-3 col-md-2" class="text-center"><h5>Доступ</h5></div>
+            </div>
+            {% for name, value in companies.items %}
+                <div class="row">
+                    <div class="col-9 col-md-10 dark d-flex justify-content-between ailgn-items-center w-100 h-auto"  role="button" data-bs-toggle="collapse" href="#collapse{{ value.company.id }}" aria-expanded="false" aria-controls="collapse{{ value.company.id }}">
+                        <a style="font-size: medium;" href="{% url 'products:edit_company' company_slug=value.company.slug%}">{{ value.company.name }}</a>
+                        
+                        {% if value.perm %}
+                        <button class="btn btn-outline-primary m-0" role="button" data-bs-toggle="collapse" href="#collapse{{ value.company.id }}" aria-expanded="false" aria-controls="collapse{{ value.company.id }}" style="font-size: 12px">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                                <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0M7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
+                            </svg>
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="col-3 col-md-2" class="text-center">
+                        <form method="post" class="btn update-permission-forms p-0" action="{% url 'users:grant_access' user_slug=inspector.username %}" onsubmit="{{ value.company.id }}perm.disabled = true; return true;">
+                            <input type="submit" class="btn-check" id="{{ value.company.id }}perm" autocomplete="on">
+                            {% csrf_token %}
+                            <input name="check" type="checkbox" class="btn-check" checked autocomplete="on" hidden>
+                            <input type="number" value="{{ value.company.id }}" name="company_id" hidden>
+                        {% if value.perm %}
+                            <label class="btn btn-primary update-label m-0" for="{{ value.company.id }}perm">Есть</label>
+                        {% else %}
+                            <label class="btn btn-outline-primary update-label m-0" for="{{ value.company.id }}perm">Нет</label>
+                        {% endif %}
+                        </form>
+                    </div>
+                </div>
+                {% if value.perm %}
+                <div class="collapse" id="collapse{{ value.company.id }}">
+                        {% for k, v in value.areas.items %}
+                        <div class="row" class="py-0">
+                            <div class="col-9 col-md-10" class="dark py-0">
+                                {{ v.area }}
+                            </div>
+                            <div class="col-3 col-md-2"  class="text-center py-0">
+                                <form onsubmit="handleSubmitPerm(event); event.prevenDefault()" id="form{{ v.area.id }}" class="update-permission-forms areaforms">
+                                    <input type="submit" class="btn-check"  autocomplete="on" id="area{{ v.area.id }}">
+                                    {% csrf_token %}
+                                    {% if v.perm %}
+                                        <label class="btn btn-primary update-label m-0" for="area{{ v.area.id }}">Есть</label>
+                                    {% else %}
+                                        <label class="btn btn-outline-primary update-label m-0" for="area{{ v.area.id }}">Нет</label>
+                                    {% endif %}
+                                        <input type="number" value="{{ v.area.id }}" name="area_id" hidden>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                </div>
+                {% endif %}
 
-                <tr>
-                    <th>Фамилия</th>
-                    <td>{{ user.last_name }}</td>
-                </tr>
-
-                <tr>
-                    <th>Эл. почта</th>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <th>Никнейм</th>
-                    <td>{{ user.username }}</td>
-                </tr>
-            </tbody>
-        </table>
+            {% endfor %}
+        
     </div>
-    <div class="col-8">
-    <table style="width: 100%">
-        <tr>
-            <th>Название компании</th>
-            <th class="text-center">Доступ</th>
-            <th></th>
-        </tr>
-        {% for name, value in companies.items %}
-            <tr>
-                <td class="col-7 dark" >
-                    <a href="{% url 'products:company_titles' company_id=value.company.id%}">{{ value.company.name }}</a>
-                </td>
-                <td class="text-center col-2">
-                    <form method="post" class="btn update-permission-forms p-0" action="{% url 'users:grant_access' user_slug=user.username %}" >
-                        <input type="submit" class="btn-check" id="{{ value.company.id }}" autocomplete="on">
-                        {% csrf_token %}
-                        <input name="check" type="checkbox" class="btn-check" checked autocomplete="on" hidden>
-                        <input type="number" value="{{ value.company.id }}" name="company_id" hidden>
-                    {% if value.perm %}
-                        <label class="btn btn-dark update-label m-0" for="{{ value.company.id }}">Есть</label>
-                    {% else %}
-                        <label class="btn btn-outline-dark update-label m-0" for="{{ value.company.id }}">Нет</label>
-                    {% endif %}
-                    </form>
-                </td>
-                <td class="col-3">
-                      <a class="btn btn-outline-dark m-0" role="button" data-bs-toggle="collapse" href="#collapse{{ value.company.id }}" aria-expanded="false" aria-controls="collapse{{ value.company.id }}" style="font-size: 12px">
-                        Посмотреть областей проверок
-                      </a>
-                </td>
-            </tr>
-            {% if value.perm %}
-             <tr class="p-0">
-             <td colspan="3" class="p-0">
-             <div class="collapse" id="collapse{{ value.company.id }}">
-
-             <table class="table p-0">
-             <tbody>
-                    {% for k, v in value.areas.items %}
-
-                    <tr class="py-0">
-                        <td class="col-7 dark py-0">
-                            {{ v.area }}
-                        </td>
-                        <td  class="text-center col-2 py-0">
-                           <form id="form{{ v.area.id }}" method="post" class="btn update-permission-forms areaforms" action="{% url 'users:update_perm' user_slug=user.username %}" >
-                               <input type="submit" class="btn-check"  autocomplete="on" id="area{{ v.area.id }}">
-                                {% csrf_token %}
-                                {% if v.perm %}
-                                    <label class="btn btn-primary update-label m-0" for="area{{ v.area.id }}">Есть</label>
-                                {% else %}
-                                    <label class="btn btn-outline-primary update-label m-0" for="area{{ v.area.id }}">Нет</label>
-                                {% endif %}
-                                    <input type="number" value="{{ v.area.id }}" name="area_id" hidden>
-                            </form>
-                        </td>
-                        <td class="py-0 col-3">
-                        </td>
-                    </tr>
-                        <script>
-                        const form{{ v.area.id }} = document.getElementById('form{{ v.area.id }}')
-                        form{{ v.area.id }}.addEventListener('submit', e => {
-                            e.preventDefault()
-                            fetch("{% url 'users:update_perm' user_slug=user.username %}" , {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': form{{ v.area.id }}.children[1].value,
-                                },
-                                body: JSON.stringify({
-                                    'area_id': {{ v.area.id }},
-                                })
-                            }).then( res => res.json())
-                                .then( data => {
-                                    const label = form{{ v.area.id }}.querySelector('.update-label');
-                                    if (data.message) {
-                                        label.classList.remove('btn-outline-primary');
-                                        label.classList.add('btn-primary');
-                                        label.textContent = 'Есть';
-                                    } else {
-                                        label.classList.remove('btn-primary');
-                                        label.classList.add('btn-outline-primary');
-                                        label.textContent = 'Нет';
-                                    }
-                                })
-                        })
-
-
-                        </script>
-                    {% endfor %}
-                </tbody>
-             </table>
-
-             </div>
-             </td>
-                </tr>
-            {% endif %}
-
-        {% endfor %}
-    </table>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        const handleSubmitPerm = (e) => {
+            e.preventDefault()
+            const form = e.target
+            const areaId = form.children[3].value
+            fetch("{% url 'users:update_perm' user_slug=inspector.username %}" , {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': form.children[1].value,
+                },
+                body:JSON.stringify({
+                    'area_id': areaId,
+                })
+            }).then( res => res.json())
+                .then( data => {
+                    console.log(data)
+                    const label = form.querySelector('.update-label');
+                    if (data.message) {
+                        label.classList.remove('btn-outline-primary');
+                        label.classList.add('btn-primary');
+                        label.textContent = 'Есть';
+                    } else {
+                        label.classList.remove('btn-primary');
+                        label.classList.add('btn-outline-primary');
+                        label.textContent = 'Нет';
+                    }
+                })
+        }
+    </script>
 
 {% endblock %}

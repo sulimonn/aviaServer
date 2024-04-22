@@ -1,25 +1,23 @@
 import json
-
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
 from documents.views import get_checklist
 from products.models import Company
 from supervision.forms import CheckMonthForm, OversightPeriodForm
-from supervision.models import CheckArea, CheckMonth, Permission, OversightPeriod, Deadline
+from supervision.models import CheckArea, CheckMonth, Permission, OversightPeriod
 from documents.models import Checklist
 from django.http import JsonResponse, HttpResponseNotFound
 from datetime import datetime, timedelta
 import locale
+import calendar
 from django.contrib.auth.decorators import user_passes_test
-
 from supervision.tasks import check_deadline, check_expiry
 from users.views import is_superuser
 locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 russian_month_names = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-
+   
 
 def table_date(date):
     start_date = date.start
@@ -50,8 +48,7 @@ def table_date(date):
 
 
 @login_required
-def control(request, company_slug):
-    today = datetime.today().date()
+def control(request, company_slug, edit=False):
     if 'period' in request.GET:
         period = request.GET['period']
         try:
@@ -88,29 +85,32 @@ def control(request, company_slug):
         for i in range(1, 21):
             check_month = None
             if request.user.is_superuser or request.user.groups.all().first().name == 'avia' :
-                check_month = CheckMonth.objects.get(area=check_area, month=i)
+                try:
+                    check_month = CheckMonth.objects.get(area=check_area, month=i)
+                except CheckMonth.DoesNotExist:
+                    check_month = {
+                        'key': i,
+                        'month': None
+                    }
             elif request.user.groups.all().first().name == 'ins':
-                check_month = CheckMonth.objects.get(area=check_area.area, month=i)
-                if not request.user.is_superuser and check_month.checking:
-                    permission = Permission.objects.filter(area=check_month.area, user=request.user)
-                    if permission.exists():
-                        deadline = Deadline.objects.filter(user=request.user, month=check_month)
-                        if not deadline.exists():
-                            days = (check_month.date - today).days
-                            deadline = Deadline.objects.create(user=request.user, until_the_deadline=days, month=check_month)
-                            deadline.save()
+                try:
+                    check_month = CheckMonth.objects.get(area=check_area.area, month=i)
+                except CheckMonth.DoesNotExist:
+                    check_month = {
+                        'key': i,
+                        'month': None
+                    }
             months[i] = check_month
         if request.user.is_superuser or request.user.groups.all().first().name == 'avia':
             check.append((check_area, months))
         else:
             check.append((check_area.area, months))
 
-    form = CheckMonthForm()
     context = {
         'range': range(1, 21),
         'check_areas': check,
         'table_html': table_html,
-        'form1': form,
+        'edit': edit,
         'company_slug': company_slug,
         'periods': OversightPeriod.objects.filter(company__slug=company_slug)
     }
@@ -132,7 +132,6 @@ def dashboard(request, company_slug):
     out_check = 0
     comments = {}
     for area in areas:
-
         months = CheckMonth.objects.filter(area=area)
         for month in months:
             if month.checking:
@@ -155,7 +154,6 @@ def dashboard(request, company_slug):
         {'category': 'Без предписаний', 'percentage': checked},
         {'category': 'Предписание', 'percentage': checking},
         {'category': 'Еще не проверено', 'percentage': not_checked},
-        #{'category': 'Непроверочные', 'percentage': out_check},
     ]
 
     context = {
@@ -170,14 +168,29 @@ def dashboard(request, company_slug):
 
 
 @user_passes_test(is_superuser)
-def update_check_month(request, check_month_id):
-    check_month = CheckMonth.objects.get(id=check_month_id)
+def delete_check_month(request, month_id):
     if request.method == 'POST':
-        check_month.checking = not check_month.checking
+        check_month = CheckMonth.objects.get(id=month_id)
+        area_id = check_month.area.pk
+        month = check_month.month
+        check_month.delete()
+        return JsonResponse({'url': f'/oversight/api/{area_id}/{month}/add/'})
+    return JsonResponse({})
+
+
+@user_passes_test(is_superuser)
+def add_check_month(request, month_id, area_id):
+    if request.method == 'POST':                
+        check_month = CheckMonth(
+            area_id=area_id,
+            month=month_id,
+        )
+        check_month.checking = True
         check_month.save()
         check_deadline()
         check_expiry()
-    return JsonResponse({'check_month': check_month.checking})
+        return JsonResponse({'url': f'/oversight/api/{check_month.pk}/delete/'})
+    return JsonResponse({})
 
 
 count: int = 1
@@ -195,7 +208,7 @@ def supervise(request, company_slug):
     try:
         ch_area = CheckMonth.objects.get(month=month, area__id=area)
         if ch_area.checking:
-            context, ch_exists = get_checklist(0, area, month)
+            context, _ = get_checklist(0, area, month)
             perm = Permission.objects.filter(user=request.user)
             return render(request, 'supervision/supervise.html', {
                 'group': groups,
@@ -221,7 +234,8 @@ def create_period(request, company_slug):
         form = OversightPeriodForm(request.POST)
         if form.is_valid():
             start_date = form.cleaned_data['start']
-            end_date = start_date + relativedelta(months=+20)
+            start_date = start_date.replace(day=1)
+            end_date = start_date + relativedelta(months=+19)
             company = Company.objects.get(slug=company_slug)
             period = f'{start_date.year}-{end_date.year}'
 
@@ -234,3 +248,32 @@ def create_period(request, company_slug):
             oversight_period.save()
 
             return redirect('supervision:control', company_slug=company_slug)
+        
+
+@user_passes_test(is_superuser)
+def move_check(request, area_id):
+    area = CheckArea.objects.get(id=int(area_id))
+    checkmonths = CheckMonth.objects.filter(area_id=int(area_id))
+    serialized_months = []
+    current_date = datetime.now().date() 
+    for mon in range(1, 21):
+        checkmonth = None
+        try:
+            checkmonth = checkmonths.get(month=mon)
+        except CheckMonth.DoesNotExist:
+            pass
+        if checkmonth:
+            serialized_months.append({
+                'month_name': russian_month_names[current_date.month - 1] + ' месяц ' + str(current_date.year),
+                'month': mon,
+                'checking': True,
+                'id': checkmonth.pk
+            })
+        else:
+            serialized_months.append({
+                'month_name': russian_month_names[current_date.month - 1] + ' месяц ' + str(current_date.year),
+                'month': mon,
+                'checking': False
+            })
+        current_date += timedelta(days=31)
+    return JsonResponse({'months': serialized_months, 'area': area.title})

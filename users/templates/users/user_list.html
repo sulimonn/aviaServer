@@ -7,38 +7,25 @@
             padding: 0;
         }
 
-        h1 {
-            text-align: center;
-            padding: 20px;
-            background-color: #0a4275;
-            color: white;
-            margin: 0;
-        }
 
         .table-container {
             margin: 20px;
             overflow-x: auto;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
 
-        th, td {
+        .row.head {
             padding: 12px 15px;
-            text-align: left;
-        }
-
-        th {
-            padding: 17px 15px;
             background-color: #0a4275;
             color: white;
         }
+        .row{
+            align-items: center;
+            padding: 6px 0;
+        }
+        
 
-        tr:hover {
+        .row:not(.head):hover {
             background-color: rgba(10, 66, 117, 0.3);
         }
 
@@ -47,94 +34,114 @@
             padding: 12px 15px;
             background-color: rgba(10, 66, 117, 0.68);
         }
+        .row{
+            border-top: none;
+            border-bottom:  1px solid #0a4275;
+            border-left:  1px solid #0a4275;
+            border-right:  1px solid #0a4275;
+        }
 
-        .dropdown-center button, td button {
+        .dropdown-center button, .row .btn {
             border-color: #0a4275 !important;
             color: #0a4275 !important;
         }
 
         .dropdown-center button:hover,
-        td button:hover {
+        .row .btn:hover {
             border-color: #0a4275 !important;
             background-color: #0a4275 !important;
             color: white !important;
         }
-
-        @media (max-width: 768px) {
-            table {
-                font-size: 14px;
-            }
-
-            th, td {
-                padding: 8px 10px;
-            }
-
-            h1 {
-                font-size: 24px;
-                padding: 10px;
-            }
-
+        .user-list{
+            width: 100%;
         }
-
+        .row{
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media screen and (max-width: 768px) {
+            .user-list .col-hide{
+                display: none;
+            }
+        }
     </style>
 {% endblock %}
 {% block content %}
     <div class="container mt-5" style="padding-top: 70px">
+{% if title == 'Компании' %}
         <h3>Список авиакомпании</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Название</th>
-                <th>
-                    Почта
-                </th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
+{% else %}
+	<h3>Список инспекторов</h3>
+{% endif %}
+        <div class="user-list">
+            <div class="row head">
+                {% if title == 'Компании' %}
+                <div class="col-5 col-md-7 px-0">
+                    <h5>Название</h5>
+                </div>
+                <div class="col-5 col-md-3">
+                    <h5>Почта</h5>
+                </div>
+                <div class="col-2"></div>
+                {% else %}
+                <div class="col-md-4 col-4">
+                    <h5>ФИО</h5>
+                </div>
+                <div class="col-3 col-hide">
+                    <h5>Почта</h5>
+                </div>
+                <div class="col-md-2 col-3"></div>
+                <div class="col-2 col-md-1"></div>
+                {% endif %}
+            </div>
 
             {% if title == 'Компании' %}
                 {% for company in companies %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'products:company_detail' company_slug=company.slug %}?">{{ company.name }}</a>
-                        </td>
-                        <td>{{ company.email }}</td>
-
-                        <td>
-                            <a href="{% url 'users:delete_company' company_slug=company.slug %}">
-                                <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
-                                    Удалить
+                    <div class="row">
+                        <div class="col-5 col-md-7">
+                            <a href="{% url 'products:edit_company' company_slug=company.slug %}?">{{ company.name }}</a>
+                        </div>
+                        <div class="col-5 col-md-3"><p>{{ company.email }}</p></div>
+                        <div class="col-2">
+                            <a href="{% url 'users:delete_company' company_slug=company.slug %}"  onclick="event.target.disabled = true; return true;">
+                                <button class="btn btn-outline-primary" style="padding: 5px 10px" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
                                 </button>
                             </a>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 {% endfor %}
             {% else %}
-                2
-                {% for user in users %}
-                    {% if not user.is_superuser %}
-                        {% if user.groups.all.first.name != 'avia' %}
-                            <tr>
-                                <td>
-                                    <a href="{% url 'users:point' user_slug=user.username %}?">{{ user.username }}</a>
-                                </td>
-                                <td>{{ user.email }}</td>
-                                <td>
-                                    <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
-                                        <a href="{% url 'users:delete_user' user_slug=user.username %}">Удалить</a>
-                                    </button>
-                                </td>
-                            </tr>
-                        {% endif %}
-                    {% endif %}
+                {% for inspector in users %}
+                    <div class="row">
+                        <div class="col-md-4 col-5">
+                            <a href="{% url 'users:edit_user' user_slug=inspector.username %}" style="text-transform: capitalize;">{{ inspector.first_name }} {{inspector.last_name}}</a>
+                        </div>
+                        <div class="col-4 col-hide">{{ inspector.email }}</div>
+                        <div class="col-md-3 col-5">
+                            <a href="{% url 'users:permission' user_slug=inspector.username %}">Изменить доступ</a>
+                        </div>
+                        <div class="col-2 col-md-1">
+                            <a href="{% url 'users:delete_user' user_slug=inspector.username %}" onclick="event.target.disabled = true; return true;">
+                                <button class="btn btn-outline-primary" style="padding: 5px 10px" type="button">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
                 {% endfor %}
             {% endif %}
-            </tbody>
-        </table>
+        </div>
         <div class="dropdown-center my-3">
             {% if title == 'Компании' %}
-                <a class="text-black-50" href="{% url 'users:register_avia' %}">
+                <a class="text-black-50" href="{% url 'products:register_avia' %}">
                     <button class="btn btn-outline-primary px-3" style="padding: 6px 5px" type="button">
                         Добавить компанию
                     </button>

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content  %}
-<div id="layoutAuthentication" style="padding-top: 100px">
+<div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
             <div class="container mt-5">
@@ -18,51 +18,75 @@
                         </div>
                         {% endif %}
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Форма добавления инспектора</h3>
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4"> {{title}} </h3>
                             </div>
                             <div class="card-body">
-                                <form action="{% url 'users:register' %}" method="post"> {% csrf_token %}
+                                <form method="post" enctype="multipart/form-data" onsubmit="register.disabled = true; return true;"> 
+                              
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="col-lg-12 text-center">
+                                            <img width="100" height="100"
+                                                src="{% if inspector.image %} {{ inspector.image.url }} {% else %} {% static 'vendor/img/users/avatar.png' %} {% endif %}"
+                                                class="img-thumbnail"
+                                                id="img-thumbnail"
+                                                >
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-12">
+                                            <div class="form-group"  style="{% if inspector.image %}padding: 17px 14px; {% endif %}">
+                                                <label  style="{% if inspector.image %}margin-left: 2%; margin-right: 2%; {% endif %}" class="custom-file-label" for="{{ form.image.id_for_label }}">Выберите изображение</label>
+                                                <div id="container-image" style="{% if inspector.image %}display: none {% endif %}">
+                                                {{ form.image }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-row">
                                         <div class="col-md-6">
-                                            <div class="form-group"><label class="small mb-1"
-                                                                           for="{{ form.first_name.id_for_label }}">Имя</label>
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="{{ form.first_name.id_for_label }}">Имя</label>
                                                 {{ form.first_name }}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group"><label class="small mb-1"
-                                                                           for="{{ form.last_name.id_for_label }}">Фамилия</label>
+                                            <div class="form-group"><label class="small mb-1" for="{{ form.last_name.id_for_label }}">Фамилия</label>
                                                 {{ form.last_name }}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="col-md-6"><label class="small mb-1"
-                                                                     for="{{ form.username.id_for_label }}">Имя
-                                            пользователя</label> {{ form.username }}
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="{{ form.username.id_for_label }}">Имя пользователя</label> 
+                                            {{ form.username }}
                                         </div>
-                                        <div class="col-md-6"><label class="small mb-1"
-                                                                     for="{{ form.email.id_for_label }}">
-                                                                     Адрес электронной почты 
-                                        </label>
+                                        <div class="col-md-6">
+                                            <label class="small mb-1" for="{{ form.email.id_for_label }}">
+                                            Адрес электронной почты 
+                                            </label>
                                             {{ form.email }}</div>
                                     </div>
+                                    {% if not edit %}
                                     <div class="form-row">
                                         <div class="col-md-6">
-                                            <div class="form-group"><label class="small mb-1"
-                                                                           for="{{ form.password1.id_for_label }}">Пароль</label>
+                                            <div class="form-group">
+                                                <label class="small mb-1"for="{{ form.password1.id_for_label }}">Пароль</label>
                                                 {{ form.password1 }}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group"><label class="small mb-1"
-                                                                           for="{{ form.password2.id_for_label }}">Подтверждение
-                                                пароля</label> {{ form.password2 }}
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="{{ form.password2.id_for_label }}">
+                                                    Подтверждение пароля
+                                                </label> 
+                                                {{ form.password2 }}
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group mt-4 mb-0"><input class="btn btn-primary btn-block"
-                                                                             type="submit" value="Создать аккаунт">
+                                    {% endif %}
+                                    <div class="form-group mt-4 mb-0">
+                                        <input class="btn btn-primary btn-block" type="submit" value="{% if not edit %}Отправить{% else %}Сохранить{% endif %}" id="register">
                                     </div>
                                 </form>
                             </div>
@@ -74,4 +98,12 @@
         </main>
     </div>
 </div>
+<script >
+    const inputImage = document.getElementById('id_image')
+    const image = document.getElementById('img-thumbnail')
+    inputImage.onchange = (e) => {
+        image.src = URL.createObjectURL(e.target.files[0])
+    }
+
+</script>
 {% endblock %}

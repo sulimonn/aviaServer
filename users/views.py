@@ -1,8 +1,7 @@
 import json
-
 from django.contrib import auth, messages
 from django.http import JsonResponse
-from django.shortcuts import render, HttpResponseRedirect, redirect
+from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
@@ -11,6 +10,10 @@ from supervision.models import Permission, CheckArea
 from supervision.tasks import check_deadline, check_expiry
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from users.models import User
+from django.core.mail import send_mail
+from django.utils.translation import gettext as _
+from decouple import config
+
 
 
 def is_superuser(user):
@@ -41,7 +44,7 @@ def login(request):
 @user_passes_test(is_superuser)
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(data=request.POST)
+        form = UserRegistrationForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             instance = form.save()
             group = Group.objects.get(name='ins')
@@ -53,6 +56,24 @@ def register(request):
     context = {
         'form': form,
         'title': 'Регистрация'
+    }
+    return render(request, 'users/register_inspector.html', context)
+
+@user_passes_test(is_superuser)
+def edit_user(request, user_slug):
+    user = User.objects.get(username=user_slug)
+    if request.method == 'POST':
+        form = UserProfileForm(data=request.POST, files=request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:user_list'))
+    else:
+        form = UserProfileForm(instance=user)
+    context = {
+        'form': form,
+        'edit': True,
+        'inspector': user,
+        'title': 'Изменить данные'
     }
     return render(request, 'users/register_inspector.html', context)
 
@@ -78,40 +99,18 @@ def logout(request):
 
 
 @user_passes_test(is_superuser)
-def user_list(request):
-    from supervision.models import Permission
+def user_list(request): 
     perms = Permission.objects.all()
-    users = User.objects.all()
+    inspectors_group = get_object_or_404(Group, name='ins')
+    users = inspectors_group.user_set.all()
     context = {
         'users': users,
         'perms': perms,
-        'title': 'Инспекторы'}
+        'title': 'Инспекторы'
+    }
     return render(request, 'users/user_list.html', context)
 
 
-@user_passes_test(is_superuser)
-def companies_list(request):
-    companies = Company.objects.all()
-    print(companies)
-    context = {
-        'companies': companies,
-        'title': 'Компании'}
-    return render(request, 'users/user_list.html', context)
-
-
-@user_passes_test(is_superuser)
-def create_company(request):
-    from products.forms import CompanyForm
-    if request.method == 'POST':
-        form = CompanyForm(request.POST)
-        if form.is_valid():
-            instance = form.save()
-            instance.save()
-            return redirect('users:companies_list')  # Redirect to a success page
-    else:
-        form = CompanyForm()
-
-    return render(request, 'users/register_avia.html', {'form': form, 'title': 'Регистрация'})
 
 
 @user_passes_test(is_superuser)
@@ -155,7 +154,7 @@ def point(request, user_slug):
 
     context = {
         'companies': company_list,
-        'user': user,
+        'inspector': user,
         'title': 'Доступ'
     }
     return render(request, 'users/point.html', context)
@@ -177,7 +176,7 @@ def grant_access(request, user_slug):
                 perm.save()
             check_deadline()
             check_expiry()
-        return redirect('users:point', user_slug=user_slug)
+        return redirect('users:permission', user_slug=user_slug)
     else:
         return JsonResponse({'message': 'Недопустимый запрос.'}, status=400)
 
@@ -201,13 +200,40 @@ def update_perm(request, user_slug):
 
 @user_passes_test(is_superuser)
 def delete_user(request, user_slug):
-    user = User.objects.get(username=user_slug)
-    user.delete()
+    try:
+        user = User.objects.get(username=user_slug)
+        user.delete()
+    except User.DoesNotExist:
+        pass
     return redirect('users:user_list')
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+        if user:
+            password = user.password 
+            print('sending')
+            send_mail(
+                _('Your Password'),  
+                _('Your password is: ') + password,  
+                config('EMAIL_HOST_USER'),  
+                [email],
+            )
+            print('sent')
+            return render(request, 'users/login.html')
+        else:
+            return render(request, 'users/forgot_password.html')
+    else:
+        return render(request, 'users/forgot_password.html')
 
 
 @user_passes_test(is_superuser)
 def delete_company(request, company_slug):
-    company = Company.objects.get(slug=company_slug)
-    company.delete()
-    return redirect('users:user_list')
+    try:
+        company = Company.objects.get(slug=company_slug)
+        company.delete()
+    except Company.DoesNotExist:
+        pass
+    return redirect('users:companies_list')

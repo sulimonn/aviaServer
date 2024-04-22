@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import user_passes_test
-from django.http import JsonResponse, HttpResponseNotFound
+from django.http import  HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
+from babel.dates import format_timedelta
 from documents.models import Moved, Checklist, Prescription, PKD, Approval, Elimination, Report, Notification
 from supervision.forms import MovedForm, ChecklistForm, PrescriptionForm, PKDForm, ApprovalForm, EliminationForm, \
     ReportForm, NotificationForm
@@ -13,27 +13,16 @@ from supervision.models import CheckMonth, CheckArea
 from supervision.serializers import ChecklistSerializer, PrescriptionSerializer, PkdSerializer, ApprovalSerializer, \
     EliminationSerializer, ReportSerializer, NotificationSerializer
 from users.views import is_superuser
-russian_month_names = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-
-
-@user_passes_test(is_superuser)
-def move_check(request, company_slug, area_id):
-    months = CheckMonth.objects.filter(area_id=int(area_id)).order_by('month')
-    serialized_months = list(months.values())
-    current_date = datetime(2023, 6, 1)
-    for mon in serialized_months:
-        mon['month_name'] = russian_month_names[current_date.month - 1] + ' месяц ' + str(current_date.year)
-        current_date += timedelta(days=31)
-    return JsonResponse({'months': serialized_months, 'area': months.first().area.title})
 
 
 @user_passes_test(is_superuser)
 def update_move_check(request, company_slug):
     if request.method == 'POST':
+        print(request.POST['current'])
         current = CheckMonth.objects.get(id=int(request.POST['current']))
         current.status = 'Moved'
         current.save()
-        move_to = CheckMonth.objects.get(id=int(request.POST['select']))
+        move_to = CheckMonth(month=int(request.POST['select']), area=current.area)
         move_to.checking = True
         move_to.save()
     return redirect('supervision:control', company_slug=company_slug)
@@ -77,23 +66,22 @@ def post(request):
     saveto = request.GET['saveto']
     company_slug = request.GET['company']
     result = None
-    match saveto:
-        case 'checklist':
-            result = post_checklist(request)
-        case 'prescription':
-            result = post_prescription(request)
-        case 'pkd':
-            result = post_pkd(request)
-        case 'approval':
-            result = post_approval(request)
-        case 'elim':
-            result = post_elimination(request)
-        case 'report':
-            result = post_report(request)
-        case 'notification':
-            result = post_notification(request)
-        case 'moved':
-            result = post_raport(request)
+    if saveto =='checklist':
+        result = post_checklist(request)
+    elif saveto == 'prescription':
+        result = post_prescription(request)
+    elif saveto == 'pkd':
+        result = post_pkd(request)
+    elif saveto == 'approval':
+        result = post_approval(request)
+    elif saveto == 'elim':
+        result = post_elimination(request)
+    elif saveto == 'report':
+        result = post_report(request)
+    elif  saveto == 'notification':
+        result = post_notification(request)
+    elif saveto == 'moved':
+        result = post_raport(request)
     if saveto == 'moved':
         url = reverse("supervision:moved", kwargs={'company_slug': company_slug})
     else:
@@ -397,10 +385,12 @@ def get_elimination(checklist_id):
         context = {
             str(checklist.count) + 'elim': elim
         }
-        checklist, exists = get_checklist(checklist.pk)
+        checklist, _ = get_checklist(checklist.pk)
         context.update(checklist)
         return context, True
     except Elimination.DoesNotExist:
+        deadline = datetime.today().date() + timedelta(days=7)
+        time_difference = deadline - datetime.today().date()
 
         context = {}
         form = EliminationForm()
@@ -411,7 +401,7 @@ def get_elimination(checklist_id):
                     'saveto': 'elim',
                     'Письмо об устранении замечаний': str(form['letter']),
                     'checklist_id': checklist.pk,
-                    'todeadline': app.deadline - datetime.today().date()
+                    'todeadline': "До истечения срока: " + str(format_timedelta(time_difference, locale='ru'))
                 }
                 context = {
                     f'form': form_data
